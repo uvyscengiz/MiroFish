@@ -14,9 +14,10 @@ export default defineConfig({
   server: {
     port: 3000,
     open: true,
+    allowedHosts: process.env.VITE_ALLOWED_HOSTS?.split(',') || true,
     proxy: {
       '/api': {
-        target: 'http://localhost:5001',
+        target: process.env.VITE_API_PROXY_URL || 'http://localhost:5001',
         changeOrigin: true,
         secure: false
       }
