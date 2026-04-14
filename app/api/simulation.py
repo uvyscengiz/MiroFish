@@ -245,7 +245,7 @@ def _check_simulation_prepared(simulation_id: str) -> tuple:
     1. state.json 存在且 status 为 "ready"
     2. 必要文件存在：reddit_profiles.json, twitter_profiles.csv, simulation_config.json
     
-    注意：运行脚本(run_*.py)保留在 backend/scripts/ 目录，不再复制到模拟目录
+    注意：运行脚本(run_*.py)保留在 scripts/ 目录，不再复制到模拟目录
     
     Args:
         simulation_id: 模拟ID
@@ -262,37 +262,38 @@ def _check_simulation_prepared(simulation_id: str) -> tuple:
     if not os.path.exists(simulation_dir):
         return False, {"reason": "模拟目录不存在"}
     
-    # 必要文件列表（不包括脚本，脚本位于 backend/scripts/）
-    required_files = [
-        "state.json",
-        "simulation_config.json",
-        "reddit_profiles.json",
-        "twitter_profiles.csv"
-    ]
-    
-    # 检查文件是否存在
-    existing_files = []
-    missing_files = []
-    for f in required_files:
-        file_path = os.path.join(simulation_dir, f)
-        if os.path.exists(file_path):
-            existing_files.append(f)
-        else:
-            missing_files.append(f)
-    
-    if missing_files:
-        return False, {
-            "reason": "缺少必要文件",
-            "missing_files": missing_files,
-            "existing_files": existing_files
-        }
-    
-    # 检查state.json中的状态
     state_file = os.path.join(simulation_dir, "state.json")
     try:
         import json
         with open(state_file, 'r', encoding='utf-8') as f:
             state_data = json.load(f)
+
+        # 必要文件列表（不包括脚本，脚本位于 scripts/）
+        required_files = [
+            "state.json",
+            "simulation_config.json",
+        ]
+        if state_data.get("enable_reddit", True):
+            required_files.append("reddit_profiles.json")
+        if state_data.get("enable_twitter", True):
+            required_files.append("twitter_profiles.csv")
+
+        # 检查文件是否存在
+        existing_files = []
+        missing_files = []
+        for f in required_files:
+            file_path = os.path.join(simulation_dir, f)
+            if os.path.exists(file_path):
+                existing_files.append(f)
+            else:
+                missing_files.append(f)
+
+        if missing_files:
+            return False, {
+                "reason": "缺少必要文件",
+                "missing_files": missing_files,
+                "existing_files": existing_files
+            }
         
         status = state_data.get("status", "")
         config_generated = state_data.get("config_generated", False)
@@ -311,14 +312,17 @@ def _check_simulation_prepared(simulation_id: str) -> tuple:
         prepared_statuses = ["ready", "preparing", "running", "completed", "stopped", "failed"]
         if status in prepared_statuses and config_generated:
             # 获取文件统计信息
-            profiles_file = os.path.join(simulation_dir, "reddit_profiles.json")
-            config_file = os.path.join(simulation_dir, "simulation_config.json")
-            
             profiles_count = 0
+            profiles_file = os.path.join(simulation_dir, "reddit_profiles.json")
             if os.path.exists(profiles_file):
                 with open(profiles_file, 'r', encoding='utf-8') as f:
                     profiles_data = json.load(f)
                     profiles_count = len(profiles_data) if isinstance(profiles_data, list) else 0
+            else:
+                twitter_profiles_file = os.path.join(simulation_dir, "twitter_profiles.csv")
+                if os.path.exists(twitter_profiles_file):
+                    with open(twitter_profiles_file, 'r', encoding='utf-8') as f:
+                        profiles_count = max(sum(1 for _ in f) - 1, 0)
             
             # 如果状态是preparing但文件已完成，自动更新状态为ready
             if status == "preparing":
@@ -830,8 +834,8 @@ def _get_report_id_for_simulation(simulation_id: str) -> str:
     import json
     from datetime import datetime
     
-    # reports 目录路径：backend/uploads/reports
-    # __file__ 是 app/api/simulation.py，需要向上两级到 backend/
+    # reports 目录路径：uploads/reports
+    # __file__ 是 app/api/simulation.py，需要向上两级到 repo root
     reports_dir = os.path.join(os.path.dirname(__file__), '../../uploads/reports')
     if not os.path.exists(reports_dir):
         return None
@@ -1323,7 +1327,7 @@ def download_simulation_config(simulation_id: str):
 @simulation_bp.route('/script/<script_name>/download', methods=['GET'])
 def download_simulation_script(script_name: str):
     """
-    下载模拟运行脚本文件（通用脚本，位于 backend/scripts/）
+    下载模拟运行脚本文件（通用脚本，位于 scripts/）
     
     script_name可选值：
         - run_twitter_simulation.py
@@ -1332,7 +1336,7 @@ def download_simulation_script(script_name: str):
         - action_logger.py
     """
     try:
-        # 脚本位于 backend/scripts/ 目录
+        # 脚本位于 scripts/ 目录
         scripts_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../scripts'))
         
         # 验证脚本名称

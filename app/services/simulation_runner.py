@@ -384,7 +384,7 @@ class SimulationRunner:
         else:
             cls._graph_memory_enabled[simulation_id] = False
         
-        # 确定运行哪个脚本（脚本位于 backend/scripts/ 目录）
+        # 确定运行哪个脚本（脚本位于 scripts/ 目录）
         if platform == "twitter":
             script_name = "run_twitter_simulation.py"
             state.twitter_running = True
@@ -1765,4 +1765,3 @@ class SimulationRunner:
             results = results[:limit]
         
         return results
-

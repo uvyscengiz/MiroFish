@@ -7,8 +7,8 @@ import os
 from dotenv import load_dotenv
 
 # 加载项目根目录的 .env 文件
-# 路径: MiroFish/.env (相对于 backend/app/config.py)
-project_root_env = os.path.join(os.path.dirname(__file__), '../../.env')
+# 路径: MiroFish/.env (相对于 app/config.py)
+project_root_env = os.path.join(os.path.dirname(__file__), '../.env')
 
 if os.path.exists(project_root_env):
     load_dotenv(project_root_env, override=True)
@@ -72,4 +72,3 @@ class Config:
         if not cls.ZEP_API_KEY:
             errors.append("ZEP_API_KEY 未配置")
         return errors
-

@@ -24,12 +24,6 @@ ENV/
 dist/
 build/
 
-# Node.js
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
 # IDE
 .vscode/
 .idea/
@@ -45,16 +39,25 @@ htmlcov/
 .cursor/
 .claude/
 
+# Codex / GSD / agent artifacts
+.planning/
+.codex/
+.agents/
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+.gemini/
+
 # 文档与测试程序
 mydoc/
 mytest/
 
 # 日志文件
-backend/logs/
+logs/
 *.log
 
 # 上传文件
-backend/uploads/
+uploads/
 
 # Docker 数据
 data/

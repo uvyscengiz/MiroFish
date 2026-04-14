@@ -31,20 +31,15 @@ _cleanup_done = False
 
 # 添加项目路径
 _scripts_dir = os.path.dirname(os.path.abspath(__file__))
-_backend_dir = os.path.abspath(os.path.join(_scripts_dir, '..'))
-_project_root = os.path.abspath(os.path.join(_backend_dir, '..'))
+_project_root = os.path.abspath(os.path.join(_scripts_dir, '..'))
 sys.path.insert(0, _scripts_dir)
-sys.path.insert(0, _backend_dir)
+sys.path.insert(0, _project_root)
 
 # 加载项目根目录的 .env 文件（包含 LLM_API_KEY 等配置）
 from dotenv import load_dotenv
 _env_file = os.path.join(_project_root, '.env')
 if os.path.exists(_env_file):
     load_dotenv(_env_file)
-else:
-    _backend_env = os.path.join(_backend_dir, '.env')
-    if os.path.exists(_backend_env):
-        load_dotenv(_backend_env)
 
 
 import re
@@ -766,4 +761,3 @@ if __name__ == "__main__":
         pass
     finally:
         print("模拟进程已退出")
-
