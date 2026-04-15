@@ -10,6 +10,10 @@ from flask import request, jsonify, send_file
 
 from . import report_bp
 from ..config import Config
+from ..services.graph_backend import (
+    GraphBackendError,
+    create_report_tools,
+)
 from ..services.report_agent import ReportAgent, ReportManager, ReportStatus
 from ..services.simulation_manager import SimulationManager
 from ..models.project import ProjectManager
@@ -957,9 +961,7 @@ def search_graph_tool():
                 "error": t('api.requireGraphIdAndQuery')
             }), 400
         
-        from ..services.zep_tools import ZepToolsService
-        
-        tools = ZepToolsService()
+        tools = create_report_tools()
         result = tools.search_graph(
             graph_id=graph_id,
             query=query,
@@ -971,6 +973,11 @@ def search_graph_tool():
             "data": result.to_dict()
         })
         
+    except GraphBackendError as e:
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
     except Exception as e:
         logger.error(f"图谱搜索失败: {str(e)}")
         return jsonify({
@@ -1001,9 +1008,7 @@ def get_graph_statistics_tool():
                 "error": t('api.requireGraphId')
             }), 400
         
-        from ..services.zep_tools import ZepToolsService
-        
-        tools = ZepToolsService()
+        tools = create_report_tools()
         result = tools.get_graph_statistics(graph_id)
         
         return jsonify({
@@ -1011,6 +1016,11 @@ def get_graph_statistics_tool():
             "data": result
         })
         
+    except GraphBackendError as e:
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
     except Exception as e:
         logger.error(f"获取图谱统计失败: {str(e)}")
         return jsonify({

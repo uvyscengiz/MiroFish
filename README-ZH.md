@@ -20,7 +20,9 @@ MiroFish 现在以纯后端 Python API 形式交付。仓库中的 Vue 前端与
 
 ```env
 LLM_API_KEY=...
-ZEP_API_KEY=...
+GRAPH_BACKEND=graphiti
+NEO4J_URI=bolt://localhost:7687
+NEO4J_PASSWORD=...
 ```
 
 常用可选变量：
@@ -32,6 +34,24 @@ FLASK_HOST=0.0.0.0
 FLASK_PORT=5001
 FLASK_DEBUG=true
 ```
+
+图谱后端变量：
+
+```env
+# 当前支持的图谱运行模式
+GRAPH_BACKEND=graphiti
+NEO4J_URI=bolt://localhost:7687
+NEO4J_USER=neo4j
+NEO4J_PASSWORD=...
+NEO4J_DATABASE=neo4j
+GRAPHITI_LLM_MODEL=gpt-4.1
+GRAPHITI_SMALL_LLM_MODEL=gpt-4.1-mini
+GRAPHITI_EMBEDDING_MODEL=text-embedding-3-small
+```
+
+`GRAPH_BACKEND=graphiti` 已是当前支持的运行路径。Neo4j 负责图数据持久化，Graphiti 负责图谱操作；如果你的 OpenAI 兼容端点没有 embeddings 模型，系统会自动退化到本地哈希向量。
+
+如果有真实 embeddings 模型，搜索质量会更好；如果没有，图谱构建、查看、模拟准备、记忆更新和报告检索仍能继续运行。
 
 ## 本地运行
 
@@ -50,7 +70,7 @@ cp .env.example .env
 docker compose up --build
 ```
 
-Compose 会暴露 `5001` 端口，并将本地 `./uploads` 挂载到容器内 `/app/uploads`。
+Compose 会暴露 `5001` 端口，额外启动 Neo4j 服务（`7474` / `7687`），将本地 `./uploads` 挂载到容器内 `/app/uploads`，并默认让后端容器连接 `bolt://neo4j:7687`。
 
 ## 保留能力
 

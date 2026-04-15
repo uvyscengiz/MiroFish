@@ -11,7 +11,10 @@ from flask import request, jsonify
 from . import graph_bp
 from ..config import Config
 from ..services.ontology_generator import OntologyGenerator
-from ..services.graph_builder import GraphBuilderService
+from ..services.graph_backend import (
+    GraphBackendError,
+    create_graph_builder,
+)
 from ..services.text_processor import TextProcessor
 from ..utils.file_parser import FileParser
 from ..utils.logger import get_logger
@@ -282,17 +285,7 @@ def build_graph():
     """
     try:
         logger.info("=== 开始构建图谱 ===")
-        
-        # 检查配置
-        errors = []
-        if not Config.ZEP_API_KEY:
-            errors.append(t('api.zepApiKeyMissing'))
-        if errors:
-            logger.error(f"配置错误: {errors}")
-            return jsonify({
-                "success": False,
-                "error": t('api.configError', details="; ".join(errors))
-            }), 500
+        create_graph_builder()
         
         # 解析请求
         data = request.get_json() or {}
@@ -387,7 +380,7 @@ def build_graph():
                 )
                 
                 # 创建图谱构建服务
-                builder = GraphBuilderService(api_key=Config.ZEP_API_KEY)
+                builder = create_graph_builder()
                 
                 # 分块
                 task_manager.update_task(
@@ -521,6 +514,12 @@ def build_graph():
             }
         })
         
+    except GraphBackendError as e:
+        logger.error(f"图谱后端未就绪: {e}")
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
     except Exception as e:
         return jsonify({
             "success": False,
@@ -572,13 +571,7 @@ def get_graph_data(graph_id: str):
     获取图谱数据（节点和边）
     """
     try:
-        if not Config.ZEP_API_KEY:
-            return jsonify({
-                "success": False,
-                "error": t('api.zepApiKeyMissing')
-            }), 500
-        
-        builder = GraphBuilderService(api_key=Config.ZEP_API_KEY)
+        builder = create_graph_builder()
         graph_data = builder.get_graph_data(graph_id)
         
         return jsonify({
@@ -586,6 +579,11 @@ def get_graph_data(graph_id: str):
             "data": graph_data
         })
         
+    except GraphBackendError as e:
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
     except Exception as e:
         return jsonify({
             "success": False,
@@ -600,13 +598,7 @@ def delete_graph(graph_id: str):
     删除Zep图谱
     """
     try:
-        if not Config.ZEP_API_KEY:
-            return jsonify({
-                "success": False,
-                "error": t('api.zepApiKeyMissing')
-            }), 500
-        
-        builder = GraphBuilderService(api_key=Config.ZEP_API_KEY)
+        builder = create_graph_builder()
         builder.delete_graph(graph_id)
         
         return jsonify({
@@ -614,6 +606,11 @@ def delete_graph(graph_id: str):
             "message": t('api.graphDeleted', id=graph_id)
         })
         
+    except GraphBackendError as e:
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
     except Exception as e:
         return jsonify({
             "success": False,

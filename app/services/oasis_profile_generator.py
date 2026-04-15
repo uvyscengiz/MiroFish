@@ -16,12 +16,11 @@ from dataclasses import dataclass, field
 from datetime import datetime
 
 from openai import OpenAI
-from zep_cloud.client import Zep
-
 from ..config import Config
 from ..utils.logger import get_logger
 from ..utils.locale import get_language_instruction, get_locale, set_locale, t
-from .zep_entity_reader import EntityNode, ZepEntityReader
+from .graph_backend import create_entity_reader
+from .zep_entity_reader import EntityNode
 
 logger = get_logger('mirofish.oasis_profile')
 
@@ -203,8 +202,10 @@ class OasisProfileGenerator:
         self.zep_client = None
         self.graph_id = graph_id
         
-        if self.zep_api_key:
+        if self.zep_api_key and Config.GRAPH_BACKEND == 'zep':
             try:
+                from zep_cloud.client import Zep
+
                 self.zep_client = Zep(api_key=self.zep_api_key)
             except Exception as e:
                 logger.warning(f"Zep客户端初始化失败: {e}")
@@ -296,6 +297,9 @@ class OasisProfileGenerator:
         Returns:
             包含facts, node_summaries, context的字典
         """
+        if Config.GRAPH_BACKEND == 'graphiti':
+            return self._search_graph_for_entity(entity)
+
         import concurrent.futures
         
         if not self.zep_client:
@@ -410,6 +414,44 @@ class OasisProfileGenerator:
             logger.warning(f"Zep检索失败 ({entity_name}): {e}")
         
         return results
+
+    def _search_graph_for_entity(self, entity: EntityNode) -> Dict[str, Any]:
+        results = {
+            "facts": [],
+            "node_summaries": [],
+            "context": "",
+        }
+
+        if not self.graph_id:
+            return results
+
+        try:
+            reader = create_entity_reader()
+            enriched = reader.get_entity_with_context(self.graph_id, entity.uuid)
+            if not enriched:
+                return results
+
+            results["facts"] = [
+                edge.get("fact", "")
+                for edge in enriched.related_edges
+                if edge.get("fact", "")
+            ][:20]
+            results["node_summaries"] = [
+                node.get("summary") or f"相关实体: {node.get('name', '')}"
+                for node in enriched.related_nodes
+                if node.get("summary") or node.get("name")
+            ][:10]
+
+            context_parts = []
+            if results["facts"]:
+                context_parts.append("事实信息:\n" + "\n".join(f"- {f}" for f in results["facts"]))
+            if results["node_summaries"]:
+                context_parts.append("相关实体:\n" + "\n".join(f"- {s}" for s in results["node_summaries"]))
+            results["context"] = "\n\n".join(context_parts)
+            return results
+        except Exception as e:
+            logger.warning(f"Graphiti检索失败 ({entity.name}): {e}")
+            return results
     
     def _build_entity_context(self, entity: EntityNode) -> str:
         """
@@ -1202,4 +1244,3 @@ class OasisProfileGenerator:
         """[已废弃] 请使用 save_profiles() 方法"""
         logger.warning("save_profiles_to_json已废弃，请使用save_profiles方法")
         self.save_profiles(profiles, file_path, platform)
-

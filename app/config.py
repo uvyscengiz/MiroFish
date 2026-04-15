@@ -19,6 +19,7 @@ else:
 
 class Config:
     """Flask配置类"""
+    SUPPORTED_GRAPH_BACKENDS = {'graphiti'}
     
     # Flask配置
     SECRET_KEY = os.environ.get('SECRET_KEY', 'mirofish-secret-key')
@@ -32,8 +33,20 @@ class Config:
     LLM_BASE_URL = os.environ.get('LLM_BASE_URL', 'https://api.openai.com/v1')
     LLM_MODEL_NAME = os.environ.get('LLM_MODEL_NAME', 'gpt-4o-mini')
     
+    # 图谱后端配置
+    GRAPH_BACKEND = os.environ.get('GRAPH_BACKEND', 'graphiti').strip().lower()
+
     # Zep配置
     ZEP_API_KEY = os.environ.get('ZEP_API_KEY')
+
+    # Neo4j / Graphiti 配置
+    NEO4J_URI = os.environ.get('NEO4J_URI')
+    NEO4J_USER = os.environ.get('NEO4J_USER', 'neo4j')
+    NEO4J_PASSWORD = os.environ.get('NEO4J_PASSWORD')
+    NEO4J_DATABASE = os.environ.get('NEO4J_DATABASE', 'neo4j')
+    GRAPHITI_LLM_MODEL = os.environ.get('GRAPHITI_LLM_MODEL') or LLM_MODEL_NAME
+    GRAPHITI_SMALL_LLM_MODEL = os.environ.get('GRAPHITI_SMALL_LLM_MODEL') or GRAPHITI_LLM_MODEL
+    GRAPHITI_EMBEDDING_MODEL = os.environ.get('GRAPHITI_EMBEDDING_MODEL', 'text-embedding-3-small')
     
     # 文件上传配置
     MAX_CONTENT_LENGTH = 50 * 1024 * 1024  # 50MB
@@ -62,6 +75,23 @@ class Config:
     REPORT_AGENT_MAX_TOOL_CALLS = int(os.environ.get('REPORT_AGENT_MAX_TOOL_CALLS', '5'))
     REPORT_AGENT_MAX_REFLECTION_ROUNDS = int(os.environ.get('REPORT_AGENT_MAX_REFLECTION_ROUNDS', '2'))
     REPORT_AGENT_TEMPERATURE = float(os.environ.get('REPORT_AGENT_TEMPERATURE', '0.5'))
+
+    @classmethod
+    def validate_graph_backend(cls):
+        """验证图谱后端基础配置"""
+        errors = []
+
+        if cls.GRAPH_BACKEND not in cls.SUPPORTED_GRAPH_BACKENDS:
+            supported = ", ".join(sorted(cls.SUPPORTED_GRAPH_BACKENDS))
+            errors.append(f"GRAPH_BACKEND 不受支持: {cls.GRAPH_BACKEND}（支持: {supported}）")
+            return errors
+
+        if not cls.NEO4J_URI:
+            errors.append("NEO4J_URI 未配置")
+        if not cls.NEO4J_PASSWORD:
+            errors.append("NEO4J_PASSWORD 未配置")
+
+        return errors
     
     @classmethod
     def validate(cls):
@@ -69,6 +99,5 @@ class Config:
         errors = []
         if not cls.LLM_API_KEY:
             errors.append("LLM_API_KEY 未配置")
-        if not cls.ZEP_API_KEY:
-            errors.append("ZEP_API_KEY 未配置")
+        errors.extend(cls.validate_graph_backend())
         return errors

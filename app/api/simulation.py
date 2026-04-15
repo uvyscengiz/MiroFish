@@ -9,7 +9,10 @@ from flask import request, jsonify, send_file
 
 from . import simulation_bp
 from ..config import Config
-from ..services.zep_entity_reader import ZepEntityReader
+from ..services.graph_backend import (
+    GraphBackendError,
+    create_entity_reader,
+)
 from ..services.oasis_profile_generator import OasisProfileGenerator
 from ..services.simulation_manager import SimulationManager, SimulationStatus
 from ..services.simulation_runner import SimulationRunner, RunnerStatus
@@ -57,19 +60,13 @@ def get_graph_entities(graph_id: str):
         enrich: 是否获取相关边信息（默认true）
     """
     try:
-        if not Config.ZEP_API_KEY:
-            return jsonify({
-                "success": False,
-                "error": t('api.zepApiKeyMissing')
-            }), 500
-        
         entity_types_str = request.args.get('entity_types', '')
         entity_types = [t.strip() for t in entity_types_str.split(',') if t.strip()] if entity_types_str else None
         enrich = request.args.get('enrich', 'true').lower() == 'true'
         
         logger.info(f"获取图谱实体: graph_id={graph_id}, entity_types={entity_types}, enrich={enrich}")
         
-        reader = ZepEntityReader()
+        reader = create_entity_reader()
         result = reader.filter_defined_entities(
             graph_id=graph_id,
             defined_entity_types=entity_types,
@@ -81,6 +78,11 @@ def get_graph_entities(graph_id: str):
             "data": result.to_dict()
         })
         
+    except GraphBackendError as e:
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
     except Exception as e:
         logger.error(f"获取图谱实体失败: {str(e)}")
         return jsonify({
@@ -94,13 +96,7 @@ def get_graph_entities(graph_id: str):
 def get_entity_detail(graph_id: str, entity_uuid: str):
     """获取单个实体的详细信息"""
     try:
-        if not Config.ZEP_API_KEY:
-            return jsonify({
-                "success": False,
-                "error": t('api.zepApiKeyMissing')
-            }), 500
-        
-        reader = ZepEntityReader()
+        reader = create_entity_reader()
         entity = reader.get_entity_with_context(graph_id, entity_uuid)
         
         if not entity:
@@ -114,6 +110,11 @@ def get_entity_detail(graph_id: str, entity_uuid: str):
             "data": entity.to_dict()
         })
         
+    except GraphBackendError as e:
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
     except Exception as e:
         logger.error(f"获取实体详情失败: {str(e)}")
         return jsonify({
@@ -127,15 +128,9 @@ def get_entity_detail(graph_id: str, entity_uuid: str):
 def get_entities_by_type(graph_id: str, entity_type: str):
     """获取指定类型的所有实体"""
     try:
-        if not Config.ZEP_API_KEY:
-            return jsonify({
-                "success": False,
-                "error": t('api.zepApiKeyMissing')
-            }), 500
-        
         enrich = request.args.get('enrich', 'true').lower() == 'true'
         
-        reader = ZepEntityReader()
+        reader = create_entity_reader()
         entities = reader.get_entities_by_type(
             graph_id=graph_id,
             entity_type=entity_type,
@@ -151,6 +146,11 @@ def get_entities_by_type(graph_id: str, entity_type: str):
             }
         })
         
+    except GraphBackendError as e:
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
     except Exception as e:
         logger.error(f"获取实体失败: {str(e)}")
         return jsonify({
@@ -476,7 +476,7 @@ def prepare_simulation():
         # 这样前端在调用prepare后立即就能获取到预期Agent总数
         try:
             logger.info(f"同步获取实体数量: graph_id={state.graph_id}")
-            reader = ZepEntityReader()
+            reader = create_entity_reader()
             # 快速读取实体（不需要边信息，只统计数量）
             filtered_preview = reader.filter_defined_entities(
                 graph_id=state.graph_id,
@@ -1405,7 +1405,7 @@ def generate_profiles():
         use_llm = data.get('use_llm', True)
         platform = data.get('platform', 'reddit')
         
-        reader = ZepEntityReader()
+        reader = create_entity_reader()
         filtered = reader.filter_defined_entities(
             graph_id=graph_id,
             defined_entity_types=entity_types,

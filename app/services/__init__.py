@@ -2,10 +2,22 @@
 业务服务模块
 """
 
+from .graph_backend import (
+    GraphBackendError,
+    GraphBackendConfigurationError,
+    GraphBackendCapabilityError,
+    create_graph_builder,
+    create_entity_reader,
+    create_report_tools,
+    get_graph_backend_name,
+    test_neo4j_connection,
+)
 from .ontology_generator import OntologyGenerator
-from .graph_builder import GraphBuilderService
+from .graphiti_graph_builder import GraphitiGraphBuilderService
+from .graphiti_entity_reader import GraphitiEntityReader
+from .graphiti_tools import GraphitiToolsService
 from .text_processor import TextProcessor
-from .zep_entity_reader import ZepEntityReader, EntityNode, FilteredEntities
+from .zep_entity_reader import EntityNode, FilteredEntities
 from .oasis_profile_generator import OasisProfileGenerator, OasisAgentProfile
 from .simulation_manager import SimulationManager, SimulationState, SimulationStatus
 from .simulation_config_generator import (
@@ -38,10 +50,19 @@ from .simulation_ipc import (
 )
 
 __all__ = [
+    'GraphBackendError',
+    'GraphBackendConfigurationError',
+    'GraphBackendCapabilityError',
+    'create_graph_builder',
+    'create_entity_reader',
+    'create_report_tools',
+    'get_graph_backend_name',
+    'test_neo4j_connection',
     'OntologyGenerator', 
-    'GraphBuilderService', 
+    'GraphitiGraphBuilderService',
+    'GraphitiEntityReader',
+    'GraphitiToolsService',
     'TextProcessor',
-    'ZepEntityReader',
     'EntityNode',
     'FilteredEntities',
     'OasisProfileGenerator',
@@ -70,4 +91,3 @@ __all__ = [
     'CommandType',
     'CommandStatus',
 ]
-
