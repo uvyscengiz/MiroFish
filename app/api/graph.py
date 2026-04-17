@@ -4,26 +4,48 @@
 """
 
 import os
-import traceback
 import threading
-from flask import request, jsonify
+import traceback
 
-from . import graph_bp
+from flask import jsonify, request
+from pydantic import ValidationError
+
 from ..config import Config
-from ..services.ontology_generator import OntologyGenerator
+from ..models.project import ProjectManager, ProjectStatus
+from ..models.task import TaskManager, TaskStatus
 from ..services.graph_backend import (
     GraphBackendError,
     create_graph_builder,
 )
+from ..services.ontology_generator import OntologyGenerator
 from ..services.text_processor import TextProcessor
 from ..utils.file_parser import FileParser
+from ..utils.locale import get_locale, set_locale, t
 from ..utils.logger import get_logger
-from ..utils.locale import t, get_locale, set_locale
-from ..models.task import TaskManager, TaskStatus
-from ..models.project import ProjectManager, ProjectStatus
+from . import graph_bp
+from .contracts.graph import (
+    BuildGraphRequest,
+    BuildGraphResponse,
+    GenerateOntologyForm,
+    GraphDataResponse,
+    ListProjectsQuery,
+    MessageResponse,
+    OntologyGenerateResponse,
+    ProjectListResponse,
+    ProjectMessageResponse,
+    ProjectResponse,
+    TaskListResponse,
+    TaskResponse,
+)
 
 # 获取日志器
 logger = get_logger('mirofish.api')
+
+
+def _typed_payload(model_cls, payload: dict):
+    """Serialize a payload through its typed contract model."""
+
+    return model_cls.model_validate(payload).model_dump(mode='json')
 
 
 def allowed_file(filename: str) -> bool:
@@ -49,10 +71,13 @@ def get_project(project_id: str):
             "error": t('api.projectNotFound', id=project_id)
         }), 404
 
-    return jsonify({
-        "success": True,
-        "data": project.to_dict()
-    })
+    return jsonify(_typed_payload(
+        ProjectResponse,
+        {
+            "success": True,
+            "data": project.to_dict(),
+        },
+    ))
 
 
 @graph_bp.route('/project/list', methods=['GET'])
@@ -60,14 +85,19 @@ def list_projects():
     """
     列出所有项目
     """
-    limit = request.args.get('limit', 50, type=int)
-    projects = ProjectManager.list_projects(limit=limit)
-    
-    return jsonify({
-        "success": True,
-        "data": [p.to_dict() for p in projects],
-        "count": len(projects)
+    query = ListProjectsQuery.model_validate({
+        'limit': request.args.get('limit', 50, type=int),
     })
+    projects = ProjectManager.list_projects(limit=query.limit)
+
+    return jsonify(_typed_payload(
+        ProjectListResponse,
+        {
+            "success": True,
+            "data": [p.to_dict() for p in projects],
+            "count": len(projects),
+        },
+    ))
 
 
 @graph_bp.route('/project/<project_id>', methods=['DELETE'])
@@ -83,10 +113,13 @@ def delete_project(project_id: str):
             "error": t('api.projectDeleteFailed', id=project_id)
         }), 404
 
-    return jsonify({
-        "success": True,
-        "message": t('api.projectDeleted', id=project_id)
-    })
+    return jsonify(_typed_payload(
+        MessageResponse,
+        {
+            "success": True,
+            "message": t('api.projectDeleted', id=project_id),
+        },
+    ))
 
 
 @graph_bp.route('/project/<project_id>/reset', methods=['POST'])
@@ -113,11 +146,14 @@ def reset_project(project_id: str):
     project.error = None
     ProjectManager.save_project(project)
     
-    return jsonify({
-        "success": True,
-        "message": t('api.projectReset', id=project_id),
-        "data": project.to_dict()
-    })
+    return jsonify(_typed_payload(
+        ProjectMessageResponse,
+        {
+            "success": True,
+            "message": t('api.projectReset', id=project_id),
+            "data": project.to_dict(),
+        },
+    ))
 
 
 # ============== 接口1：上传文件并生成本体 ==============
@@ -174,10 +210,16 @@ def generate_ontology():
                 "success": False,
                 "error": t('api.requireFileUpload')
             }), 400
-        
+
+        form_data = GenerateOntologyForm.model_validate({
+            'simulation_requirement': simulation_requirement,
+            'project_name': project_name,
+            'additional_context': additional_context,
+        })
+
         # 创建项目
-        project = ProjectManager.create_project(name=project_name)
-        project.simulation_requirement = simulation_requirement
+        project = ProjectManager.create_project(name=form_data.project_name)
+        project.simulation_requirement = form_data.simulation_requirement
         logger.info(f"创建项目: {project.project_id}")
         
         # 保存文件并提取文本
@@ -220,8 +262,8 @@ def generate_ontology():
         generator = OntologyGenerator()
         ontology = generator.generate(
             document_texts=document_texts,
-            simulation_requirement=simulation_requirement,
-            additional_context=additional_context if additional_context else None
+            simulation_requirement=form_data.simulation_requirement,
+            additional_context=form_data.additional_context or None
         )
         
         # 保存本体到项目
@@ -238,18 +280,26 @@ def generate_ontology():
         ProjectManager.save_project(project)
         logger.info(f"=== 本体生成完成 === 项目ID: {project.project_id}")
         
+        return jsonify(_typed_payload(
+            OntologyGenerateResponse,
+            {
+                "success": True,
+                "data": {
+                    "project_id": project.project_id,
+                    "project_name": project.name,
+                    "ontology": project.ontology,
+                    "analysis_summary": project.analysis_summary,
+                    "files": project.files,
+                    "total_text_length": project.total_text_length,
+                },
+            },
+        ))
+
+    except ValidationError as e:
         return jsonify({
-            "success": True,
-            "data": {
-                "project_id": project.project_id,
-                "project_name": project.name,
-                "ontology": project.ontology,
-                "analysis_summary": project.analysis_summary,
-                "files": project.files,
-                "total_text_length": project.total_text_length
-            }
-        })
-        
+            "success": False,
+            "error": str(e),
+        }), 400
     except Exception as e:
         return jsonify({
             "success": False,
@@ -306,8 +356,8 @@ def build_graph():
                 "error": t('api.projectNotFound', id=project_id)
             }), 404
 
-        # 检查项目状态
-        force = data.get('force', False)  # 强制重新构建
+        payload = BuildGraphRequest.model_validate(data)
+        force = payload.force  # 强制重新构建
         
         if project.status == ProjectStatus.CREATED:
             return jsonify({
@@ -323,16 +373,24 @@ def build_graph():
             }), 400
         
         # 如果强制重建，重置状态
-        if force and project.status in [ProjectStatus.GRAPH_BUILDING, ProjectStatus.FAILED, ProjectStatus.GRAPH_COMPLETED]:
+        if force and project.status in [
+            ProjectStatus.GRAPH_BUILDING,
+            ProjectStatus.FAILED,
+            ProjectStatus.GRAPH_COMPLETED,
+        ]:
             project.status = ProjectStatus.ONTOLOGY_GENERATED
             project.graph_id = None
             project.graph_build_task_id = None
             project.error = None
         
         # 获取配置
-        graph_name = data.get('graph_name', project.name or 'MiroFish Graph')
-        chunk_size = data.get('chunk_size', project.chunk_size or Config.DEFAULT_CHUNK_SIZE)
-        chunk_overlap = data.get('chunk_overlap', project.chunk_overlap or Config.DEFAULT_CHUNK_OVERLAP)
+        graph_name = payload.graph_name or project.name or 'MiroFish Graph'
+        chunk_size = payload.chunk_size or project.chunk_size or Config.DEFAULT_CHUNK_SIZE
+        chunk_overlap = (
+            payload.chunk_overlap
+            or project.chunk_overlap
+            or Config.DEFAULT_CHUNK_OVERLAP
+        )
         
         # 更新项目配置
         project.chunk_size = chunk_size
@@ -468,7 +526,10 @@ def build_graph():
                 
                 node_count = graph_data.get("node_count", 0)
                 edge_count = graph_data.get("edge_count", 0)
-                build_logger.info(f"[{task_id}] 图谱构建完成: graph_id={graph_id}, 节点={node_count}, 边={edge_count}")
+                build_logger.info(
+                    f"[{task_id}] 图谱构建完成: graph_id={graph_id}, "
+                    f"节点={node_count}, 边={edge_count}"
+                )
                 
                 # 完成
                 task_manager.update_task(
@@ -505,14 +566,17 @@ def build_graph():
         thread = threading.Thread(target=build_task, daemon=True)
         thread.start()
         
-        return jsonify({
-            "success": True,
-            "data": {
-                "project_id": project_id,
-                "task_id": task_id,
-                "message": t('api.graphBuildStarted', taskId=task_id)
-            }
-        })
+        return jsonify(_typed_payload(
+            BuildGraphResponse,
+            {
+                "success": True,
+                "data": {
+                    "project_id": project_id,
+                    "task_id": task_id,
+                    "message": t('api.graphBuildStarted', taskId=task_id),
+                },
+            },
+        ))
         
     except GraphBackendError as e:
         logger.error(f"图谱后端未就绪: {e}")
@@ -520,6 +584,11 @@ def build_graph():
             "success": False,
             "error": str(e)
         }), 500
+    except ValidationError as e:
+        return jsonify({
+            "success": False,
+            "error": str(e),
+        }), 400
     except Exception as e:
         return jsonify({
             "success": False,
@@ -543,10 +612,13 @@ def get_task(task_id: str):
             "error": t('api.taskNotFound', id=task_id)
         }), 404
     
-    return jsonify({
-        "success": True,
-        "data": task.to_dict()
-    })
+    return jsonify(_typed_payload(
+        TaskResponse,
+        {
+            "success": True,
+            "data": task.to_dict(),
+        },
+    ))
 
 
 @graph_bp.route('/tasks', methods=['GET'])
@@ -556,11 +628,14 @@ def list_tasks():
     """
     tasks = TaskManager().list_tasks()
     
-    return jsonify({
-        "success": True,
-        "data": [t.to_dict() for t in tasks],
-        "count": len(tasks)
-    })
+    return jsonify(_typed_payload(
+        TaskListResponse,
+        {
+            "success": True,
+            "data": tasks,
+            "count": len(tasks),
+        },
+    ))
 
 
 # ============== 图谱数据接口 ==============
@@ -574,10 +649,13 @@ def get_graph_data(graph_id: str):
         builder = create_graph_builder()
         graph_data = builder.get_graph_data(graph_id)
         
-        return jsonify({
-            "success": True,
-            "data": graph_data
-        })
+        return jsonify(_typed_payload(
+            GraphDataResponse,
+            {
+                "success": True,
+                "data": graph_data,
+            },
+        ))
         
     except GraphBackendError as e:
         return jsonify({
@@ -601,10 +679,13 @@ def delete_graph(graph_id: str):
         builder = create_graph_builder()
         builder.delete_graph(graph_id)
         
-        return jsonify({
-            "success": True,
-            "message": t('api.graphDeleted', id=graph_id)
-        })
+        return jsonify(_typed_payload(
+            MessageResponse,
+            {
+                "success": True,
+                "message": t('api.graphDeleted', id=graph_id),
+            },
+        ))
         
     except GraphBackendError as e:
         return jsonify({

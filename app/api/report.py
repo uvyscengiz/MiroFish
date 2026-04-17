@@ -4,24 +4,41 @@ Report API路由
 """
 
 import os
-import traceback
 import threading
-from flask import request, jsonify, send_file
+import traceback
+
+from flask import jsonify, request, send_file
+from pydantic import ValidationError
 
 from . import report_bp
+from .contracts.report import (
+    GenerateReportRequest,
+    GenerateReportResponse,
+    GenerateReportStatusRequest,
+    ReportBySimulationResponse,
+    ReportListResponse,
+    ReportResponse,
+    ReportTaskStatusResponse,
+)
 from ..config import Config
+from ..models.project import ProjectManager
+from ..models.task import TaskManager, TaskStatus
 from ..services.graph_backend import (
     GraphBackendError,
     create_report_tools,
 )
 from ..services.report_agent import ReportAgent, ReportManager, ReportStatus
 from ..services.simulation_manager import SimulationManager
-from ..models.project import ProjectManager
-from ..models.task import TaskManager, TaskStatus
 from ..utils.logger import get_logger
-from ..utils.locale import t, get_locale, set_locale
+from ..utils.locale import get_locale, set_locale, t
 
 logger = get_logger('mirofish.api.report')
+
+
+def _typed_payload(model_cls, payload: dict):
+    """Serialize a payload through its typed contract model."""
+
+    return model_cls.model_validate(payload).model_dump(mode='json')
 
 
 # ============== 报告生成接口 ==============
@@ -53,15 +70,9 @@ def generate_report():
     """
     try:
         data = request.get_json() or {}
-        
-        simulation_id = data.get('simulation_id')
-        if not simulation_id:
-            return jsonify({
-                "success": False,
-                "error": t('api.requireSimulationId')
-            }), 400
-
-        force_regenerate = data.get('force_regenerate', False)
+        payload = GenerateReportRequest.model_validate(data)
+        simulation_id = payload.simulation_id
+        force_regenerate = payload.force_regenerate
         
         # 获取模拟信息
         manager = SimulationManager()
@@ -78,14 +89,19 @@ def generate_report():
             existing_report = ReportManager.get_report_by_simulation(simulation_id)
             if existing_report and existing_report.status == ReportStatus.COMPLETED:
                 return jsonify({
-                    "success": True,
-                    "data": {
-                        "simulation_id": simulation_id,
-                        "report_id": existing_report.report_id,
-                        "status": "completed",
-                        "message": t('api.reportAlreadyExists'),
-                        "already_generated": True
-                    }
+                    **_typed_payload(
+                        GenerateReportResponse,
+                        {
+                            "success": True,
+                            "data": {
+                                "simulation_id": simulation_id,
+                                "report_id": existing_report.report_id,
+                                "status": "completed",
+                                "message": t('api.reportAlreadyExists'),
+                                "already_generated": True,
+                            },
+                        },
+                    )
                 })
         
         # 获取项目信息
@@ -183,18 +199,28 @@ def generate_report():
         thread = threading.Thread(target=run_generate, daemon=True)
         thread.start()
         
-        return jsonify({
-            "success": True,
-            "data": {
-                "simulation_id": simulation_id,
-                "report_id": report_id,
-                "task_id": task_id,
-                "status": "generating",
-                "message": t('api.reportGenerateStarted'),
-                "already_generated": False
-            }
-        })
+        return jsonify(
+            _typed_payload(
+                GenerateReportResponse,
+                {
+                    "success": True,
+                    "data": {
+                        "simulation_id": simulation_id,
+                        "report_id": report_id,
+                        "task_id": task_id,
+                        "status": "generating",
+                        "message": t('api.reportGenerateStarted'),
+                        "already_generated": False,
+                    },
+                },
+            )
+        )
         
+    except ValidationError as e:
+        return jsonify({
+            "success": False,
+            "error": str(e),
+        }), 400
     except Exception as e:
         logger.error(f"启动报告生成任务失败: {str(e)}")
         return jsonify({
@@ -228,25 +254,39 @@ def get_generate_status():
     """
     try:
         data = request.get_json() or {}
-        
-        task_id = data.get('task_id')
-        simulation_id = data.get('simulation_id')
+        payload = GenerateReportStatusRequest.model_validate(data)
+        task_id = payload.task_id
+        simulation_id = payload.simulation_id
         
         # 如果提供了simulation_id，先检查是否已有完成的报告
         if simulation_id:
             existing_report = ReportManager.get_report_by_simulation(simulation_id)
             if existing_report and existing_report.status == ReportStatus.COMPLETED:
-                return jsonify({
-                    "success": True,
-                    "data": {
-                        "simulation_id": simulation_id,
-                        "report_id": existing_report.report_id,
-                        "status": "completed",
-                        "progress": 100,
-                        "message": t('api.reportGenerated'),
-                        "already_completed": True
-                    }
-                })
+                return jsonify(
+                    _typed_payload(
+                        ReportTaskStatusResponse,
+                        {
+                            "success": True,
+                            "data": {
+                                "task_id": "",
+                                "task_type": "report_generate",
+                                "status": "completed",
+                                "created_at": "",
+                                "updated_at": "",
+                                "progress": 100,
+                                "message": t('api.reportGenerated'),
+                                "progress_detail": {},
+                                "result": {
+                                    "simulation_id": simulation_id,
+                                    "report_id": existing_report.report_id,
+                                    "already_completed": True,
+                                },
+                                "error": None,
+                                "metadata": {},
+                            },
+                        },
+                    )
+                )
         
         if not task_id:
             return jsonify({
@@ -263,11 +303,21 @@ def get_generate_status():
                 "error": t('api.taskNotFound', id=task_id)
             }), 404
         
-        return jsonify({
-            "success": True,
-            "data": task.to_dict()
-        })
+        return jsonify(
+            _typed_payload(
+                ReportTaskStatusResponse,
+                {
+                    "success": True,
+                    "data": task.to_dict(),
+                },
+            )
+        )
         
+    except ValidationError as e:
+        return jsonify({
+            "success": False,
+            "error": str(e),
+        }), 400
     except Exception as e:
         logger.error(f"查询任务状态失败: {str(e)}")
         return jsonify({
@@ -306,10 +356,15 @@ def get_report(report_id: str):
                 "error": t('api.reportNotFound', id=report_id)
             }), 404
         
-        return jsonify({
-            "success": True,
-            "data": report.to_dict()
-        })
+        return jsonify(
+            _typed_payload(
+                ReportResponse,
+                {
+                    "success": True,
+                    "data": report.to_dict(),
+                },
+            )
+        )
         
     except Exception as e:
         logger.error(f"获取报告失败: {str(e)}")
@@ -344,11 +399,16 @@ def get_report_by_simulation(simulation_id: str):
                 "has_report": False
             }), 404
         
-        return jsonify({
-            "success": True,
-            "data": report.to_dict(),
-            "has_report": True
-        })
+        return jsonify(
+            _typed_payload(
+                ReportBySimulationResponse,
+                {
+                    "success": True,
+                    "data": report.to_dict(),
+                    "has_report": True,
+                },
+            )
+        )
         
     except Exception as e:
         logger.error(f"获取报告失败: {str(e)}")
@@ -384,11 +444,16 @@ def list_reports():
             limit=limit
         )
         
-        return jsonify({
-            "success": True,
-            "data": [r.to_dict() for r in reports],
-            "count": len(reports)
-        })
+        return jsonify(
+            _typed_payload(
+                ReportListResponse,
+                {
+                    "success": True,
+                    "data": [r.to_dict() for r in reports],
+                    "count": len(reports),
+                },
+            )
+        )
         
     except Exception as e:
         logger.error(f"列出报告失败: {str(e)}")

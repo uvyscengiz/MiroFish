@@ -13,7 +13,8 @@ from flask import Flask, request
 from flask_cors import CORS
 
 from .config import Config
-from .utils.logger import setup_logger, get_logger
+from .openapi import build_openapi_spec
+from .utils.logger import get_logger, setup_logger
 
 
 def create_app(config_class=Config):
@@ -63,7 +64,7 @@ def create_app(config_class=Config):
         return response
     
     # 注册蓝图
-    from .api import graph_bp, simulation_bp, report_bp
+    from .api import graph_bp, report_bp, simulation_bp
     app.register_blueprint(graph_bp, url_prefix='/api/graph')
     app.register_blueprint(simulation_bp, url_prefix='/api/simulation')
     app.register_blueprint(report_bp, url_prefix='/api/report')
@@ -72,9 +73,12 @@ def create_app(config_class=Config):
     @app.route('/health')
     def health():
         return {'status': 'ok', 'service': 'MiroFish Backend'}
+
+    @app.route('/openapi.json')
+    def openapi_spec():
+        return build_openapi_spec(app)
     
     if should_log_startup:
         logger.info("MiroFish Backend 启动完成")
     
     return app
-

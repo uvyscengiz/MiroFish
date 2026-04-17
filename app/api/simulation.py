@@ -5,9 +5,18 @@ Step2: Zep实体读取与过滤、OASIS模拟准备与运行（全程自动化�
 
 import os
 import traceback
-from flask import request, jsonify, send_file
+from flask import jsonify, request, send_file
+from pydantic import ValidationError
 
 from . import simulation_bp
+from .contracts.simulation import (
+    CreateSimulationRequest,
+    SimulationListResponse,
+    SimulationPrepareStatusRequest,
+    SimulationPrepareStatusResponse,
+    SimulationResponse,
+    SimulationRunStatusResponse,
+)
 from ..config import Config
 from ..services.graph_backend import (
     GraphBackendError,
@@ -26,6 +35,12 @@ logger = get_logger('mirofish.api.simulation')
 # Interview prompt 优化前缀
 # 添加此前缀可以避免Agent调用工具，直接用文本回复
 INTERVIEW_PROMPT_PREFIX = "结合你的人设、所有的过往记忆与行动，不调用任何工具直接用文本回复我："
+
+
+def _typed_payload(model_cls, payload: dict):
+    """Serialize a payload through its typed contract model."""
+
+    return model_cls.model_validate(payload).model_dump(mode='json')
 
 
 def optimize_interview_prompt(prompt: str) -> str:
@@ -193,14 +208,9 @@ def create_simulation():
     """
     try:
         data = request.get_json() or {}
-        
-        project_id = data.get('project_id')
-        if not project_id:
-            return jsonify({
-                "success": False,
-                "error": t('api.requireProjectId')
-            }), 400
-        
+        payload = CreateSimulationRequest.model_validate(data)
+        project_id = payload.project_id
+
         project = ProjectManager.get_project(project_id)
         if not project:
             return jsonify({
@@ -208,7 +218,7 @@ def create_simulation():
                 "error": t('api.projectNotFound', id=project_id)
             }), 404
         
-        graph_id = data.get('graph_id') or project.graph_id
+        graph_id = payload.graph_id or project.graph_id
         if not graph_id:
             return jsonify({
                 "success": False,
@@ -219,15 +229,24 @@ def create_simulation():
         state = manager.create_simulation(
             project_id=project_id,
             graph_id=graph_id,
-            enable_twitter=data.get('enable_twitter', True),
-            enable_reddit=data.get('enable_reddit', True),
+            enable_twitter=payload.enable_twitter,
+            enable_reddit=payload.enable_reddit,
         )
-        
+
+        return jsonify(
+            _typed_payload(
+                SimulationResponse,
+                {
+                    "success": True,
+                    "data": state.to_dict(),
+                },
+            )
+        )
+    except ValidationError as e:
         return jsonify({
-            "success": True,
-            "data": state.to_dict()
-        })
-        
+            "success": False,
+            "error": str(e),
+        }), 400
     except Exception as e:
         logger.error(f"创建模拟失败: {str(e)}")
         return jsonify({
@@ -675,9 +694,10 @@ def get_prepare_status():
     
     try:
         data = request.get_json() or {}
-        
-        task_id = data.get('task_id')
-        simulation_id = data.get('simulation_id')
+        payload = SimulationPrepareStatusRequest.model_validate(data)
+
+        task_id = payload.task_id
+        simulation_id = payload.simulation_id
         
         # 如果提供了simulation_id，先检查是否已准备完成
         if simulation_id:
@@ -743,10 +763,15 @@ def get_prepare_status():
         task_dict = task.to_dict()
         task_dict["already_prepared"] = False
         
-        return jsonify({
-            "success": True,
-            "data": task_dict
-        })
+        return jsonify(
+            _typed_payload(
+                SimulationPrepareStatusResponse,
+                {
+                    "success": True,
+                    "data": task_dict,
+                },
+            )
+        )
         
     except Exception as e:
         logger.error(f"查询任务状态失败: {str(e)}")
@@ -775,10 +800,15 @@ def get_simulation(simulation_id: str):
         if state.status == SimulationStatus.READY:
             result["run_instructions"] = manager.get_run_instructions(simulation_id)
         
-        return jsonify({
-            "success": True,
-            "data": result
-        })
+        return jsonify(
+            _typed_payload(
+                SimulationResponse,
+                {
+                    "success": True,
+                    "data": result,
+                },
+            )
+        )
         
     except Exception as e:
         logger.error(f"获取模拟状态失败: {str(e)}")
@@ -803,11 +833,16 @@ def list_simulations():
         manager = SimulationManager()
         simulations = manager.list_simulations(project_id=project_id)
         
-        return jsonify({
-            "success": True,
-            "data": [s.to_dict() for s in simulations],
-            "count": len(simulations)
-        })
+        return jsonify(
+            _typed_payload(
+                SimulationListResponse,
+                {
+                    "success": True,
+                    "data": [s.to_dict() for s in simulations],
+                    "count": len(simulations),
+                },
+            )
+        )
         
     except Exception as e:
         logger.error(f"列出模拟失败: {str(e)}")
@@ -1736,24 +1771,34 @@ def get_run_status(simulation_id: str):
         run_state = SimulationRunner.get_run_state(simulation_id)
         
         if not run_state:
-            return jsonify({
-                "success": True,
-                "data": {
-                    "simulation_id": simulation_id,
-                    "runner_status": "idle",
-                    "current_round": 0,
-                    "total_rounds": 0,
-                    "progress_percent": 0,
-                    "twitter_actions_count": 0,
-                    "reddit_actions_count": 0,
-                    "total_actions_count": 0,
-                }
-            })
-        
-        return jsonify({
-            "success": True,
-            "data": run_state.to_dict()
-        })
+            return jsonify(
+                _typed_payload(
+                    SimulationRunStatusResponse,
+                    {
+                        "success": True,
+                        "data": {
+                            "simulation_id": simulation_id,
+                            "runner_status": "idle",
+                            "current_round": 0,
+                            "total_rounds": 0,
+                            "progress_percent": 0,
+                            "twitter_actions_count": 0,
+                            "reddit_actions_count": 0,
+                            "total_actions_count": 0,
+                        },
+                    },
+                )
+            )
+
+        return jsonify(
+            _typed_payload(
+                SimulationRunStatusResponse,
+                {
+                    "success": True,
+                    "data": run_state.to_dict(),
+                },
+            )
+        )
         
     except Exception as e:
         logger.error(f"获取运行状态失败: {str(e)}")

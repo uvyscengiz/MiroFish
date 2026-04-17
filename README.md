@@ -80,3 +80,29 @@ The restructure preserves the existing backend product surface:
 - `/api/simulation` for simulation preparation, execution, and interaction
 - `/api/report` for report generation flows
 - `/health` for service health checks
+
+## OpenAPI And Client Generation
+
+Export the current contract without starting a separate server:
+
+```bash
+uv run python scripts/export_openapi.py --output openapi/openapi.json
+```
+
+Generate a typed TypeScript client from the exported contract:
+
+```bash
+npx --yes openapi-typescript-codegen \
+  --input openapi/openapi.json \
+  --output generated/mirofish-client \
+  --client fetch
+```
+
+If you want to export from the running Docker deployment instead, start the stack and fetch the live contract:
+
+```bash
+docker compose up --build -d
+curl http://localhost:5001/openapi.json -o openapi/openapi.json
+```
+
+Then run the same `openapi-typescript-codegen` command against `openapi/openapi.json`.

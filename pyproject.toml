@@ -34,6 +34,8 @@ dev = [
     "pytest>=8.0.0",
     "pytest-asyncio>=0.23.0",
     "pipreqs>=0.5.0",
+    "mypy>=1.18.2",
+    "ruff>=0.11.8",
 ]
 
 [build-system]
@@ -42,9 +44,30 @@ build-backend = "hatchling.build"
 
 [dependency-groups]
 dev = [
+    "mypy>=1.18.2",
     "pytest>=8.0.0",
     "pytest-asyncio>=0.23.0",
+    "ruff>=0.11.8",
 ]
 
 [tool.hatch.build.targets.wheel]
 packages = ["app"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["B", "E", "F", "I", "UP"]
+
+[tool.ruff.lint.per-file-ignores]
+"app/__init__.py" = ["E402"]
+"app/api/*.py" = ["B008"]
+
+[tool.mypy]
+python_version = "3.11"
+files = ["app/api/contracts", "app/openapi"]
+strict = true
+ignore_missing_imports = true
+follow_imports = "silent"
+explicit_package_bases = true

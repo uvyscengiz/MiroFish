@@ -1,0 +1,5107 @@
+{
+  "components": {
+    "schemas": {
+      "BuildGraphRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "chunk_overlap": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Chunk Overlap"
+          },
+          "chunk_size": {
+            "anyOf": [
+              {
+                "minimum": 1,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Chunk Size"
+          },
+          "force": {
+            "default": false,
+            "title": "Force",
+            "type": "boolean"
+          },
+          "graph_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Graph Name"
+          },
+          "project_id": {
+            "minLength": 1,
+            "title": "Project Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "project_id"
+        ],
+        "title": "BuildGraphRequest",
+        "type": "object"
+      },
+      "BuildGraphResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/BuildGraphResult"
+          },
+          "success": {
+            "const": true,
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "BuildGraphResponse",
+        "type": "object"
+      },
+      "BuildGraphResult": {
+        "additionalProperties": false,
+        "properties": {
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "project_id": {
+            "title": "Project Id",
+            "type": "string"
+          },
+          "task_id": {
+            "title": "Task Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "project_id",
+          "task_id",
+          "message"
+        ],
+        "title": "BuildGraphResult",
+        "type": "object"
+      },
+      "CreateSimulationRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "enable_reddit": {
+            "default": true,
+            "title": "Enable Reddit",
+            "type": "boolean"
+          },
+          "enable_twitter": {
+            "default": true,
+            "title": "Enable Twitter",
+            "type": "boolean"
+          },
+          "graph_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Graph Id"
+          },
+          "project_id": {
+            "minLength": 1,
+            "title": "Project Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "project_id"
+        ],
+        "title": "CreateSimulationRequest",
+        "type": "object"
+      },
+      "ErrorEnvelope": {
+        "additionalProperties": false,
+        "description": "Error response envelope used by the existing handlers.",
+        "properties": {
+          "error": {
+            "description": "Primary error detail.",
+            "title": "Error",
+            "type": "string"
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Optional human-readable error message.",
+            "title": "Message"
+          },
+          "success": {
+            "const": false,
+            "default": false,
+            "title": "Success",
+            "type": "boolean"
+          },
+          "traceback": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Optional traceback returned by existing 500 handlers.",
+            "title": "Traceback"
+          }
+        },
+        "required": [
+          "error"
+        ],
+        "title": "ErrorEnvelope",
+        "type": "object"
+      },
+      "GenerateOntologyForm": {
+        "additionalProperties": false,
+        "properties": {
+          "additional_context": {
+            "default": "",
+            "title": "Additional Context",
+            "type": "string"
+          },
+          "project_name": {
+            "default": "Unnamed Project",
+            "title": "Project Name",
+            "type": "string"
+          },
+          "simulation_requirement": {
+            "minLength": 1,
+            "title": "Simulation Requirement",
+            "type": "string"
+          }
+        },
+        "required": [
+          "simulation_requirement"
+        ],
+        "title": "GenerateOntologyForm",
+        "type": "object"
+      },
+      "GenerateReportRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "force_regenerate": {
+            "default": false,
+            "title": "Force Regenerate",
+            "type": "boolean"
+          },
+          "simulation_id": {
+            "minLength": 1,
+            "title": "Simulation Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "simulation_id"
+        ],
+        "title": "GenerateReportRequest",
+        "type": "object"
+      },
+      "GenerateReportResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/GenerateReportResult"
+          },
+          "success": {
+            "const": true,
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "GenerateReportResponse",
+        "type": "object"
+      },
+      "GenerateReportResult": {
+        "additionalProperties": false,
+        "properties": {
+          "already_generated": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Already Generated"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "report_id": {
+            "title": "Report Id",
+            "type": "string"
+          },
+          "simulation_id": {
+            "title": "Simulation Id",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "task_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Task Id"
+          }
+        },
+        "required": [
+          "simulation_id",
+          "report_id",
+          "status",
+          "message"
+        ],
+        "title": "GenerateReportResult",
+        "type": "object"
+      },
+      "GenerateReportStatusRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "simulation_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Simulation Id"
+          },
+          "task_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Task Id"
+          }
+        },
+        "title": "GenerateReportStatusRequest",
+        "type": "object"
+      },
+      "GraphDataPayload": {
+        "additionalProperties": true,
+        "properties": {
+          "edge_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Edge Count"
+          },
+          "edges": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Edges",
+            "type": "array"
+          },
+          "node_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Node Count"
+          },
+          "nodes": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Nodes",
+            "type": "array"
+          }
+        },
+        "title": "GraphDataPayload",
+        "type": "object"
+      },
+      "GraphDataResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/GraphDataPayload"
+          },
+          "success": {
+            "const": true,
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "GraphDataResponse",
+        "type": "object"
+      },
+      "HealthEnvelope": {
+        "additionalProperties": false,
+        "description": "Health response shape exposed at /health.",
+        "properties": {
+          "service": {
+            "description": "Service display name.",
+            "title": "Service",
+            "type": "string"
+          },
+          "status": {
+            "description": "Service status value.",
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "service"
+        ],
+        "title": "HealthEnvelope",
+        "type": "object"
+      },
+      "MessageEnvelope": {
+        "additionalProperties": false,
+        "description": "Success envelope variant for message-only responses.",
+        "properties": {
+          "data": {
+            "anyOf": [
+              {},
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Optional supplemental payload.",
+            "title": "Data"
+          },
+          "message": {
+            "description": "Human-readable success message.",
+            "title": "Message",
+            "type": "string"
+          },
+          "success": {
+            "const": true,
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "message"
+        ],
+        "title": "MessageEnvelope",
+        "type": "object"
+      },
+      "MessageResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "success": {
+            "const": true,
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "message"
+        ],
+        "title": "MessageResponse",
+        "type": "object"
+      },
+      "OntologyGenerateResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/OntologyGenerateResult"
+          },
+          "success": {
+            "const": true,
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "OntologyGenerateResponse",
+        "type": "object"
+      },
+      "OntologyGenerateResult": {
+        "additionalProperties": false,
+        "properties": {
+          "analysis_summary": {
+            "title": "Analysis Summary",
+            "type": "string"
+          },
+          "files": {
+            "items": {
+              "$ref": "#/components/schemas/ProjectFileInfo"
+            },
+            "title": "Files",
+            "type": "array"
+          },
+          "ontology": {
+            "$ref": "#/components/schemas/OntologyPayload"
+          },
+          "project_id": {
+            "title": "Project Id",
+            "type": "string"
+          },
+          "project_name": {
+            "title": "Project Name",
+            "type": "string"
+          },
+          "total_text_length": {
+            "title": "Total Text Length",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "project_id",
+          "project_name",
+          "ontology",
+          "analysis_summary",
+          "total_text_length"
+        ],
+        "title": "OntologyGenerateResult",
+        "type": "object"
+      },
+      "OntologyPayload": {
+        "additionalProperties": true,
+        "properties": {
+          "edge_types": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Edge Types",
+            "type": "array"
+          },
+          "entity_types": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Entity Types",
+            "type": "array"
+          }
+        },
+        "title": "OntologyPayload",
+        "type": "object"
+      },
+      "OpenAPIDocument": {
+        "additionalProperties": false,
+        "description": "Top-level machine-readable contract exposed at /openapi.json.",
+        "properties": {
+          "components": {
+            "additionalProperties": true,
+            "description": "Reusable schema and component registry.",
+            "title": "Components",
+            "type": "object"
+          },
+          "info": {
+            "additionalProperties": true,
+            "description": "Service metadata for the contract.",
+            "title": "Info",
+            "type": "object"
+          },
+          "openapi": {
+            "description": "OpenAPI document version.",
+            "title": "Openapi",
+            "type": "string"
+          },
+          "paths": {
+            "additionalProperties": true,
+            "description": "Path and operation map for the live API.",
+            "title": "Paths",
+            "type": "object"
+          },
+          "servers": {
+            "description": "Declared server entries for the contract.",
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Servers",
+            "type": "array"
+          }
+        },
+        "required": [
+          "openapi",
+          "info"
+        ],
+        "title": "OpenAPIDocument",
+        "type": "object"
+      },
+      "ProjectFileInfo": {
+        "additionalProperties": false,
+        "properties": {
+          "filename": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Filename"
+          },
+          "original_filename": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Original Filename"
+          },
+          "path": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Path"
+          },
+          "saved_filename": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Saved Filename"
+          },
+          "size": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Size"
+          }
+        },
+        "title": "ProjectFileInfo",
+        "type": "object"
+      },
+      "ProjectListResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/ProjectPayload"
+            },
+            "title": "Data",
+            "type": "array"
+          },
+          "success": {
+            "const": true,
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data",
+          "count"
+        ],
+        "title": "ProjectListResponse",
+        "type": "object"
+      },
+      "ProjectMessageResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ProjectPayload"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "success": {
+            "const": true,
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "message",
+          "data"
+        ],
+        "title": "ProjectMessageResponse",
+        "type": "object"
+      },
+      "ProjectPayload": {
+        "additionalProperties": false,
+        "properties": {
+          "analysis_summary": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Analysis Summary"
+          },
+          "chunk_overlap": {
+            "default": 50,
+            "title": "Chunk Overlap",
+            "type": "integer"
+          },
+          "chunk_size": {
+            "default": 500,
+            "title": "Chunk Size",
+            "type": "integer"
+          },
+          "created_at": {
+            "title": "Created At",
+            "type": "string"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Error"
+          },
+          "files": {
+            "items": {
+              "$ref": "#/components/schemas/ProjectFileInfo"
+            },
+            "title": "Files",
+            "type": "array"
+          },
+          "graph_build_task_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Graph Build Task Id"
+          },
+          "graph_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Graph Id"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "ontology": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/OntologyPayload"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "project_id": {
+            "title": "Project Id",
+            "type": "string"
+          },
+          "simulation_requirement": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Simulation Requirement"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "total_text_length": {
+            "default": 0,
+            "title": "Total Text Length",
+            "type": "integer"
+          },
+          "updated_at": {
+            "title": "Updated At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "project_id",
+          "name",
+          "status",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "ProjectPayload",
+        "type": "object"
+      },
+      "ProjectResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ProjectPayload"
+          },
+          "success": {
+            "const": true,
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "ProjectResponse",
+        "type": "object"
+      },
+      "ReportBySimulationResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ReportPayload"
+          },
+          "has_report": {
+            "default": true,
+            "title": "Has Report",
+            "type": "boolean"
+          },
+          "success": {
+            "const": true,
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "ReportBySimulationResponse",
+        "type": "object"
+      },
+      "ReportListResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/ReportPayload"
+            },
+            "title": "Data",
+            "type": "array"
+          },
+          "success": {
+            "const": true,
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data",
+          "count"
+        ],
+        "title": "ReportListResponse",
+        "type": "object"
+      },
+      "ReportOutlinePayload": {
+        "additionalProperties": false,
+        "properties": {
+          "sections": {
+            "items": {
+              "$ref": "#/components/schemas/ReportSectionPayload"
+            },
+            "title": "Sections",
+            "type": "array"
+          },
+          "summary": {
+            "title": "Summary",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "summary"
+        ],
+        "title": "ReportOutlinePayload",
+        "type": "object"
+      },
+      "ReportPayload": {
+        "additionalProperties": false,
+        "properties": {
+          "completed_at": {
+            "default": "",
+            "title": "Completed At",
+            "type": "string"
+          },
+          "created_at": {
+            "default": "",
+            "title": "Created At",
+            "type": "string"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Error"
+          },
+          "graph_id": {
+            "title": "Graph Id",
+            "type": "string"
+          },
+          "markdown_content": {
+            "default": "",
+            "title": "Markdown Content",
+            "type": "string"
+          },
+          "outline": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ReportOutlinePayload"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "report_id": {
+            "title": "Report Id",
+            "type": "string"
+          },
+          "simulation_id": {
+            "title": "Simulation Id",
+            "type": "string"
+          },
+          "simulation_requirement": {
+            "title": "Simulation Requirement",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "report_id",
+          "simulation_id",
+          "graph_id",
+          "simulation_requirement",
+          "status"
+        ],
+        "title": "ReportPayload",
+        "type": "object"
+      },
+      "ReportResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ReportPayload"
+          },
+          "success": {
+            "const": true,
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "ReportResponse",
+        "type": "object"
+      },
+      "ReportSectionPayload": {
+        "additionalProperties": false,
+        "properties": {
+          "content": {
+            "default": "",
+            "title": "Content",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "title"
+        ],
+        "title": "ReportSectionPayload",
+        "type": "object"
+      },
+      "ReportTaskStatusResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/TaskPayload"
+          },
+          "success": {
+            "const": true,
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "ReportTaskStatusResponse",
+        "type": "object"
+      },
+      "SimulationListResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/SimulationStatePayload"
+            },
+            "title": "Data",
+            "type": "array"
+          },
+          "success": {
+            "const": true,
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data",
+          "count"
+        ],
+        "title": "SimulationListResponse",
+        "type": "object"
+      },
+      "SimulationPrepareStatusRequest": {
+        "properties": {
+          "simulation_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Simulation Id"
+          },
+          "task_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Task Id"
+          }
+        },
+        "title": "SimulationPrepareStatusRequest",
+        "type": "object"
+      },
+      "SimulationPrepareStatusResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/TaskPayload"
+          },
+          "success": {
+            "const": true,
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "SimulationPrepareStatusResponse",
+        "type": "object"
+      },
+      "SimulationResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/SimulationStatePayload"
+          },
+          "success": {
+            "const": true,
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "SimulationResponse",
+        "type": "object"
+      },
+      "SimulationRunStatePayload": {
+        "additionalProperties": true,
+        "properties": {
+          "completed_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Completed At"
+          },
+          "current_round": {
+            "default": 0,
+            "title": "Current Round",
+            "type": "integer"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Error"
+          },
+          "process_pid": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Process Pid"
+          },
+          "progress_percent": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "default": 0,
+            "title": "Progress Percent"
+          },
+          "reddit_actions_count": {
+            "default": 0,
+            "title": "Reddit Actions Count",
+            "type": "integer"
+          },
+          "reddit_completed": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Reddit Completed"
+          },
+          "reddit_current_round": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": 0,
+            "title": "Reddit Current Round"
+          },
+          "reddit_running": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Reddit Running"
+          },
+          "reddit_simulated_hours": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": 0,
+            "title": "Reddit Simulated Hours"
+          },
+          "runner_status": {
+            "title": "Runner Status",
+            "type": "string"
+          },
+          "simulated_hours": {
+            "default": 0,
+            "title": "Simulated Hours",
+            "type": "integer"
+          },
+          "simulation_id": {
+            "title": "Simulation Id",
+            "type": "string"
+          },
+          "started_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Started At"
+          },
+          "total_actions_count": {
+            "default": 0,
+            "title": "Total Actions Count",
+            "type": "integer"
+          },
+          "total_rounds": {
+            "default": 0,
+            "title": "Total Rounds",
+            "type": "integer"
+          },
+          "total_simulation_hours": {
+            "default": 0,
+            "title": "Total Simulation Hours",
+            "type": "integer"
+          },
+          "twitter_actions_count": {
+            "default": 0,
+            "title": "Twitter Actions Count",
+            "type": "integer"
+          },
+          "twitter_completed": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Twitter Completed"
+          },
+          "twitter_current_round": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": 0,
+            "title": "Twitter Current Round"
+          },
+          "twitter_running": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Twitter Running"
+          },
+          "twitter_simulated_hours": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": 0,
+            "title": "Twitter Simulated Hours"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Updated At"
+          }
+        },
+        "required": [
+          "simulation_id",
+          "runner_status"
+        ],
+        "title": "SimulationRunStatePayload",
+        "type": "object"
+      },
+      "SimulationRunStatusResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/SimulationRunStatePayload"
+          },
+          "success": {
+            "const": true,
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "SimulationRunStatusResponse",
+        "type": "object"
+      },
+      "SimulationStatePayload": {
+        "additionalProperties": false,
+        "properties": {
+          "config_generated": {
+            "default": false,
+            "title": "Config Generated",
+            "type": "boolean"
+          },
+          "config_reasoning": {
+            "default": "",
+            "title": "Config Reasoning",
+            "type": "string"
+          },
+          "created_at": {
+            "title": "Created At",
+            "type": "string"
+          },
+          "current_round": {
+            "default": 0,
+            "title": "Current Round",
+            "type": "integer"
+          },
+          "enable_reddit": {
+            "default": true,
+            "title": "Enable Reddit",
+            "type": "boolean"
+          },
+          "enable_twitter": {
+            "default": true,
+            "title": "Enable Twitter",
+            "type": "boolean"
+          },
+          "entities_count": {
+            "default": 0,
+            "title": "Entities Count",
+            "type": "integer"
+          },
+          "entity_types": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Entity Types",
+            "type": "array"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Error"
+          },
+          "graph_id": {
+            "title": "Graph Id",
+            "type": "string"
+          },
+          "profiles_count": {
+            "default": 0,
+            "title": "Profiles Count",
+            "type": "integer"
+          },
+          "project_id": {
+            "title": "Project Id",
+            "type": "string"
+          },
+          "reddit_status": {
+            "default": "not_started",
+            "title": "Reddit Status",
+            "type": "string"
+          },
+          "run_instructions": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Run Instructions"
+          },
+          "simulation_id": {
+            "title": "Simulation Id",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "twitter_status": {
+            "default": "not_started",
+            "title": "Twitter Status",
+            "type": "string"
+          },
+          "updated_at": {
+            "title": "Updated At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "simulation_id",
+          "project_id",
+          "graph_id",
+          "status",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "SimulationStatePayload",
+        "type": "object"
+      },
+      "SuccessEnvelope": {
+        "additionalProperties": false,
+        "description": "Generic success response envelope used across the API.",
+        "properties": {
+          "data": {
+            "anyOf": [
+              {},
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Operation-specific response payload.",
+            "title": "Data"
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Optional human-readable success message.",
+            "title": "Message"
+          },
+          "success": {
+            "const": true,
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "title": "SuccessEnvelope",
+        "type": "object"
+      },
+      "TaskListResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/TaskPayload"
+            },
+            "title": "Data",
+            "type": "array"
+          },
+          "success": {
+            "const": true,
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data",
+          "count"
+        ],
+        "title": "TaskListResponse",
+        "type": "object"
+      },
+      "TaskPayload": {
+        "additionalProperties": false,
+        "properties": {
+          "created_at": {
+            "title": "Created At",
+            "type": "string"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Error"
+          },
+          "message": {
+            "default": "",
+            "title": "Message",
+            "type": "string"
+          },
+          "metadata": {
+            "additionalProperties": true,
+            "title": "Metadata",
+            "type": "object"
+          },
+          "progress": {
+            "default": 0,
+            "title": "Progress",
+            "type": "integer"
+          },
+          "progress_detail": {
+            "additionalProperties": true,
+            "title": "Progress Detail",
+            "type": "object"
+          },
+          "result": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Result"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "task_id": {
+            "title": "Task Id",
+            "type": "string"
+          },
+          "task_type": {
+            "title": "Task Type",
+            "type": "string"
+          },
+          "updated_at": {
+            "title": "Updated At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "task_id",
+          "task_type",
+          "status",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "TaskPayload",
+        "type": "object"
+      },
+      "TaskResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/TaskPayload"
+          },
+          "success": {
+            "const": true,
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "TaskResponse",
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Machine-readable contract for the existing MiroFish backend-only Flask service.",
+    "title": "MiroFish Backend API",
+    "version": "0.1.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/api/graph/build": {
+      "post": {
+        "description": "接口2：根据project_id构建图谱\n\n请求（JSON）：\n    {\n        \"project_id\": \"proj_xxxx\",  // 必填，来自接口1\n        \"graph_name\": \"图谱名称\",    // 可选\n        \"chunk_size\": 500,          // 可选，默认500\n        \"chunk_overlap\": 50         // 可选，默认50\n    }\n    \n返回：\n    {\n        \"success\": true,\n        \"data\": {\n            \"project_id\": \"proj_xxxx\",\n            \"task_id\": \"task_xxxx\",\n            \"message\": \"图谱构建任务已启动\"\n        }\n    }",
+        "operationId": "graph_build_graph_post",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BuildGraphRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BuildGraphResponse"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Request validation or state error."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "Start graph build",
+        "tags": [
+          "graph"
+        ]
+      }
+    },
+    "/api/graph/data/{graph_id}": {
+      "get": {
+        "description": "获取图谱数据（节点和边）",
+        "operationId": "graph_get_graph_data_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "graph_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GraphDataResponse"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "Get graph data",
+        "tags": [
+          "graph"
+        ]
+      }
+    },
+    "/api/graph/delete/{graph_id}": {
+      "delete": {
+        "description": "删除Zep图谱",
+        "operationId": "graph_delete_graph_delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "graph_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponse"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "Delete graph",
+        "tags": [
+          "graph"
+        ]
+      }
+    },
+    "/api/graph/ontology/generate": {
+      "post": {
+        "description": "接口1：上传文件，分析生成本体定义\n\n请求方式：multipart/form-data\n\n参数：\n    files: 上传的文件（PDF/MD/TXT），可多个\n    simulation_requirement: 模拟需求描述（必填）\n    project_name: 项目名称（可选）\n    additional_context: 额外说明（可选）\n    \n返回：\n    {\n        \"success\": true,\n        \"data\": {\n            \"project_id\": \"proj_xxxx\",\n            \"ontology\": {\n                \"entity_types\": [...],\n                \"edge_types\": [...],\n                \"analysis_summary\": \"...\"\n            },\n            \"files\": [...],\n            \"total_text_length\": 12345\n        }\n    }",
+        "operationId": "graph_generate_ontology_post",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateOntologyForm"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OntologyGenerateResponse"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Request validation or state error."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "Generate ontology from uploaded documents",
+        "tags": [
+          "graph"
+        ]
+      }
+    },
+    "/api/graph/project/list": {
+      "get": {
+        "description": "列出所有项目",
+        "operationId": "graph_list_projects_get",
+        "parameters": [
+          {
+            "description": "Maximum number of projects to return.",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "minimum": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectListResponse"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "List projects",
+        "tags": [
+          "graph"
+        ]
+      }
+    },
+    "/api/graph/project/{project_id}": {
+      "delete": {
+        "description": "删除项目",
+        "operationId": "graph_delete_project_delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponse"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "Delete project",
+        "tags": [
+          "graph"
+        ]
+      },
+      "get": {
+        "description": "获取项目详情",
+        "operationId": "graph_get_project_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectResponse"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "Get project detail",
+        "tags": [
+          "graph"
+        ]
+      }
+    },
+    "/api/graph/project/{project_id}/reset": {
+      "post": {
+        "description": "重置项目状态（用于重新构建图谱）",
+        "operationId": "graph_reset_project_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": true,
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectMessageResponse"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Request validation or state error."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "Reset project state",
+        "tags": [
+          "graph"
+        ]
+      }
+    },
+    "/api/graph/task/{task_id}": {
+      "get": {
+        "description": "查询任务状态",
+        "operationId": "graph_get_task_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "task_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskResponse"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "Get graph task status",
+        "tags": [
+          "graph"
+        ]
+      }
+    },
+    "/api/graph/tasks": {
+      "get": {
+        "description": "列出所有任务",
+        "operationId": "graph_list_tasks_get",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskListResponse"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "List graph tasks",
+        "tags": [
+          "graph"
+        ]
+      }
+    },
+    "/api/report/by-simulation/{simulation_id}": {
+      "get": {
+        "description": "根据模拟ID获取报告\n\n返回：\n    {\n        \"success\": true,\n        \"data\": {\n            \"report_id\": \"report_xxxx\",\n            ...\n        }\n    }",
+        "operationId": "report_get_report_by_simulation_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportBySimulationResponse"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "Get report by simulation",
+        "tags": [
+          "report"
+        ]
+      }
+    },
+    "/api/report/chat": {
+      "post": {
+        "description": "与Report Agent对话\n\nReport Agent可以在对话中自主调用检索工具来回答问题\n\n请求（JSON）：\n    {\n        \"simulation_id\": \"sim_xxxx\",        // 必填，模拟ID\n        \"message\": \"请解释一下舆情走向\",    // 必填，用户消息\n        \"chat_history\": [                   // 可选，对话历史\n            {\"role\": \"user\", \"content\": \"...\"},\n            {\"role\": \"assistant\", \"content\": \"...\"}\n        ]\n    }\n\n返回：\n    {\n        \"success\": true,\n        \"data\": {\n            \"response\": \"Agent回复...\",\n            \"tool_calls\": [调用的工具列表],\n            \"sources\": [信息来源]\n        }\n    }",
+        "operationId": "report_chat_with_report_agent_post",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": true,
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Request validation or state error."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "与Report Agent对话",
+        "tags": [
+          "report"
+        ]
+      }
+    },
+    "/api/report/check/{simulation_id}": {
+      "get": {
+        "description": "检查模拟是否有报告，以及报告状态\n\n用于前端判断是否解锁Interview功能\n\n返回：\n    {\n        \"success\": true,\n        \"data\": {\n            \"simulation_id\": \"sim_xxxx\",\n            \"has_report\": true,\n            \"report_status\": \"completed\",\n            \"report_id\": \"report_xxxx\",\n            \"interview_unlocked\": true\n        }\n    }",
+        "operationId": "report_check_report_status_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "检查模拟是否有报告，以及报告状态",
+        "tags": [
+          "report"
+        ]
+      }
+    },
+    "/api/report/generate": {
+      "post": {
+        "description": "生成模拟分析报告（异步任务）\n\n这是一个耗时操作，接口会立即返回task_id，\n使用 GET /api/report/generate/status 查询进度\n\n请求（JSON）：\n    {\n        \"simulation_id\": \"sim_xxxx\",    // 必填，模拟ID\n        \"force_regenerate\": false        // 可选，强制重新生成\n    }\n\n返回：\n    {\n        \"success\": true,\n        \"data\": {\n            \"simulation_id\": \"sim_xxxx\",\n            \"task_id\": \"task_xxxx\",\n            \"status\": \"generating\",\n            \"message\": \"报告生成任务已启动\"\n        }\n    }",
+        "operationId": "report_generate_report_post",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateReportRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenerateReportResponse"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Request validation or state error."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "Generate report",
+        "tags": [
+          "report"
+        ]
+      }
+    },
+    "/api/report/generate/status": {
+      "post": {
+        "description": "查询报告生成任务进度\n\n请求（JSON）：\n    {\n        \"task_id\": \"task_xxxx\",         // 可选，generate返回的task_id\n        \"simulation_id\": \"sim_xxxx\"     // 可选，模拟ID\n    }\n\n返回：\n    {\n        \"success\": true,\n        \"data\": {\n            \"task_id\": \"task_xxxx\",\n            \"status\": \"processing|completed|failed\",\n            \"progress\": 45,\n            \"message\": \"...\"\n        }\n    }",
+        "operationId": "report_get_generate_status_post",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateReportStatusRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportTaskStatusResponse"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Request validation or state error."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "Get report generation status",
+        "tags": [
+          "report"
+        ]
+      }
+    },
+    "/api/report/list": {
+      "get": {
+        "description": "列出所有报告\n\nQuery参数：\n    simulation_id: 按模拟ID过滤（可选）\n    limit: 返回数量限制（默认50）\n\n返回：\n    {\n        \"success\": true,\n        \"data\": [...],\n        \"count\": 10\n    }",
+        "operationId": "report_list_reports_get",
+        "parameters": [
+          {
+            "description": "Optional simulation id to filter reports.",
+            "in": "query",
+            "name": "simulation_id",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Maximum number of reports to return.",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "minimum": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportListResponse"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "List reports",
+        "tags": [
+          "report"
+        ]
+      }
+    },
+    "/api/report/tools/search": {
+      "post": {
+        "description": "图谱搜索工具接口（供调试使用）\n\n请求（JSON）：\n    {\n        \"graph_id\": \"mirofish_xxxx\",\n        \"query\": \"搜索查询\",\n        \"limit\": 10\n    }",
+        "operationId": "report_search_graph_tool_post",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": true,
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Request validation or state error."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "图谱搜索工具接口（供调试使用）",
+        "tags": [
+          "report"
+        ]
+      }
+    },
+    "/api/report/tools/statistics": {
+      "post": {
+        "description": "图谱统计工具接口（供调试使用）\n\n请求（JSON）：\n    {\n        \"graph_id\": \"mirofish_xxxx\"\n    }",
+        "operationId": "report_get_graph_statistics_tool_post",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": true,
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Request validation or state error."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "图谱统计工具接口（供调试使用）",
+        "tags": [
+          "report"
+        ]
+      }
+    },
+    "/api/report/{report_id}": {
+      "delete": {
+        "description": "删除报告",
+        "operationId": "report_delete_report_delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "report_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageEnvelope"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "删除报告",
+        "tags": [
+          "report"
+        ]
+      },
+      "get": {
+        "description": "获取报告详情\n\n返回：\n    {\n        \"success\": true,\n        \"data\": {\n            \"report_id\": \"report_xxxx\",\n            \"simulation_id\": \"sim_xxxx\",\n            \"status\": \"completed\",\n            \"outline\": {...},\n            \"markdown_content\": \"...\",\n            \"created_at\": \"...\",\n            \"completed_at\": \"...\"\n        }\n    }",
+        "operationId": "report_get_report_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "report_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportResponse"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "Get report detail",
+        "tags": [
+          "report"
+        ]
+      }
+    },
+    "/api/report/{report_id}/agent-log": {
+      "get": {
+        "description": "获取 Report Agent 的详细执行日志\n\n实时获取报告生成过程中的每一步动作，包括：\n- 报告开始、规划开始/完成\n- 每个章节的开始、工具调用、LLM响应、完成\n- 报告完成或失败\n\nQuery参数：\n    from_line: 从第几行开始读取（可选，默认0，用于增量获取）\n\n返回：\n    {\n        \"success\": true,\n        \"data\": {\n            \"logs\": [\n                {\n                    \"timestamp\": \"2025-12-13T...\",\n                    \"elapsed_seconds\": 12.5,\n                    \"report_id\": \"report_xxxx\",\n                    \"action\": \"tool_call\",\n                    \"stage\": \"generating\",\n                    \"section_title\": \"执行摘要\",\n                    \"section_index\": 1,\n                    \"details\": {\n                        \"tool_name\": \"insight_forge\",\n                        \"parameters\": {...},\n                        ...\n                    }\n                },\n                ...\n            ],\n            \"total_lines\": 25,\n            \"from_line\": 0,\n            \"has_more\": false\n        }\n    }",
+        "operationId": "report_get_agent_log_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "report_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "获取 Report Agent 的详细执行日志",
+        "tags": [
+          "report"
+        ]
+      }
+    },
+    "/api/report/{report_id}/agent-log/stream": {
+      "get": {
+        "description": "获取完整的 Agent 日志（一次性获取全部）\n\n返回：\n    {\n        \"success\": true,\n        \"data\": {\n            \"logs\": [...],\n            \"count\": 25\n        }\n    }",
+        "operationId": "report_stream_agent_log_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "report_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "text/event-stream": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "获取完整的 Agent 日志（一次性获取全部）",
+        "tags": [
+          "report"
+        ]
+      }
+    },
+    "/api/report/{report_id}/console-log": {
+      "get": {
+        "description": "获取 Report Agent 的控制台输出日志\n\n实时获取报告生成过程中的控制台输出（INFO、WARNING等），\n这与 agent-log 接口返回的结构化 JSON 日志不同，\n是纯文本格式的控制台风格日志。\n\nQuery参数：\n    from_line: 从第几行开始读取（可选，默认0，用于增量获取）\n\n返回：\n    {\n        \"success\": true,\n        \"data\": {\n            \"logs\": [\n                \"[19:46:14] INFO: 搜索完成: 找到 15 条相关事实\",\n                \"[19:46:14] INFO: 图谱搜索: graph_id=xxx, query=...\",\n                ...\n            ],\n            \"total_lines\": 100,\n            \"from_line\": 0,\n            \"has_more\": false\n        }\n    }",
+        "operationId": "report_get_console_log_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "report_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "获取 Report Agent 的控制台输出日志",
+        "tags": [
+          "report"
+        ]
+      }
+    },
+    "/api/report/{report_id}/console-log/stream": {
+      "get": {
+        "description": "获取完整的控制台日志（一次性获取全部）\n\n返回：\n    {\n        \"success\": true,\n        \"data\": {\n            \"logs\": [...],\n            \"count\": 100\n        }\n    }",
+        "operationId": "report_stream_console_log_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "report_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "text/event-stream": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "获取完整的控制台日志（一次性获取全部）",
+        "tags": [
+          "report"
+        ]
+      }
+    },
+    "/api/report/{report_id}/download": {
+      "get": {
+        "description": "下载报告（Markdown格式）\n\n返回Markdown文件",
+        "operationId": "report_download_report_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "report_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "format": "binary",
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "下载报告（Markdown格式）",
+        "tags": [
+          "report"
+        ]
+      }
+    },
+    "/api/report/{report_id}/progress": {
+      "get": {
+        "description": "获取报告生成进度（实时）\n\n返回：\n    {\n        \"success\": true,\n        \"data\": {\n            \"status\": \"generating\",\n            \"progress\": 45,\n            \"message\": \"正在生成章节: 关键发现\",\n            \"current_section\": \"关键发现\",\n            \"completed_sections\": [\"执行摘要\", \"模拟背景\"],\n            \"updated_at\": \"2025-12-09T...\"\n        }\n    }",
+        "operationId": "report_get_report_progress_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "report_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "获取报告生成进度（实时）",
+        "tags": [
+          "report"
+        ]
+      }
+    },
+    "/api/report/{report_id}/section/{section_index}": {
+      "get": {
+        "description": "获取单个章节内容\n\n返回：\n    {\n        \"success\": true,\n        \"data\": {\n            \"filename\": \"section_01.md\",\n            \"content\": \"## 执行摘要\\n\\n...\"\n        }\n    }",
+        "operationId": "report_get_single_section_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "report_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "section_index",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "获取单个章节内容",
+        "tags": [
+          "report"
+        ]
+      }
+    },
+    "/api/report/{report_id}/sections": {
+      "get": {
+        "description": "获取已生成的章节列表（分章节输出）\n\n前端可以轮询此接口获取已生成的章节内容，无需等待整个报告完成\n\n返回：\n    {\n        \"success\": true,\n        \"data\": {\n            \"report_id\": \"report_xxxx\",\n            \"sections\": [\n                {\n                    \"filename\": \"section_01.md\",\n                    \"section_index\": 1,\n                    \"content\": \"## 执行摘要\\n\\n...\"\n                },\n                ...\n            ],\n            \"total_sections\": 3,\n            \"is_complete\": false\n        }\n    }",
+        "operationId": "report_get_report_sections_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "report_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "获取已生成的章节列表（分章节输出）",
+        "tags": [
+          "report"
+        ]
+      }
+    },
+    "/api/simulation/close-env": {
+      "post": {
+        "description": "关闭模拟环境\n\n向模拟发送关闭环境命令，使其优雅退出等待命令模式。\n\n注意：这不同于 /stop 接口，/stop 会强制终止进程，\n而此接口会让模拟优雅地关闭环境并退出。\n\n请求（JSON）：\n    {\n        \"simulation_id\": \"sim_xxxx\",  // 必填，模拟ID\n        \"timeout\": 30                  // 可选，超时时间（秒），默认30\n    }\n\n返回：\n    {\n        \"success\": true,\n        \"data\": {\n            \"message\": \"环境关闭命令已发送\",\n            \"result\": {...},\n            \"timestamp\": \"2025-12-08T10:00:01\"\n        }\n    }",
+        "operationId": "simulation_close_simulation_env_post",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": true,
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Request validation or state error."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "关闭模拟环境",
+        "tags": [
+          "simulation"
+        ]
+      }
+    },
+    "/api/simulation/create": {
+      "post": {
+        "description": "创建新的模拟\n\n注意：max_rounds等参数由LLM智能生成，无需手动设置\n\n请求（JSON）：\n    {\n        \"project_id\": \"proj_xxxx\",      // 必填\n        \"graph_id\": \"mirofish_xxxx\",    // 可选，如不提供则从project获取\n        \"enable_twitter\": true,          // 可选，默认true\n        \"enable_reddit\": true            // 可选，默认true\n    }\n\n返回：\n    {\n        \"success\": true,\n        \"data\": {\n            \"simulation_id\": \"sim_xxxx\",\n            \"project_id\": \"proj_xxxx\",\n            \"graph_id\": \"mirofish_xxxx\",\n            \"status\": \"created\",\n            \"enable_twitter\": true,\n            \"enable_reddit\": true,\n            \"created_at\": \"2025-12-01T10:00:00\"\n        }\n    }",
+        "operationId": "simulation_create_simulation_post",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSimulationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimulationResponse"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Request validation or state error."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "Create simulation",
+        "tags": [
+          "simulation"
+        ]
+      }
+    },
+    "/api/simulation/entities/{graph_id}": {
+      "get": {
+        "description": "获取图谱中的所有实体（已过滤）\n\n只返回符合预定义实体类型的节点（Labels不只是Entity的节点）\n\nQuery参数：\n    entity_types: 逗号分隔的实体类型列表（可选，用于进一步过滤）\n    enrich: 是否获取相关边信息（默认true）",
+        "operationId": "simulation_get_graph_entities_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "graph_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "获取图谱中的所有实体（已过滤）",
+        "tags": [
+          "simulation"
+        ]
+      }
+    },
+    "/api/simulation/entities/{graph_id}/by-type/{entity_type}": {
+      "get": {
+        "description": "获取指定类型的所有实体",
+        "operationId": "simulation_get_entities_by_type_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "graph_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "entity_type",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "获取指定类型的所有实体",
+        "tags": [
+          "simulation"
+        ]
+      }
+    },
+    "/api/simulation/entities/{graph_id}/{entity_uuid}": {
+      "get": {
+        "description": "获取单个实体的详细信息",
+        "operationId": "simulation_get_entity_detail_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "graph_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "entity_uuid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "获取单个实体的详细信息",
+        "tags": [
+          "simulation"
+        ]
+      }
+    },
+    "/api/simulation/env-status": {
+      "post": {
+        "description": "获取模拟环境状态\n\n检查模拟环境是否存活（可以接收Interview命令）\n\n请求（JSON）：\n    {\n        \"simulation_id\": \"sim_xxxx\"  // 必填，模拟ID\n    }\n\n返回：\n    {\n        \"success\": true,\n        \"data\": {\n            \"simulation_id\": \"sim_xxxx\",\n            \"env_alive\": true,\n            \"twitter_available\": true,\n            \"reddit_available\": true,\n            \"message\": \"环境正在运行，可以接收Interview命令\"\n        }\n    }",
+        "operationId": "simulation_get_env_status_post",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": true,
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Request validation or state error."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "获取模拟环境状态",
+        "tags": [
+          "simulation"
+        ]
+      }
+    },
+    "/api/simulation/generate-profiles": {
+      "post": {
+        "description": "直接从图谱生成OASIS Agent Profile（不创建模拟）\n\n请求（JSON）：\n    {\n        \"graph_id\": \"mirofish_xxxx\",     // 必填\n        \"entity_types\": [\"Student\"],      // 可选\n        \"use_llm\": true,                  // 可选\n        \"platform\": \"reddit\"              // 可选\n    }",
+        "operationId": "simulation_generate_profiles_post",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": true,
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Request validation or state error."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "直接从图谱生成OASIS Agent Profile（不创建模拟）",
+        "tags": [
+          "simulation"
+        ]
+      }
+    },
+    "/api/simulation/history": {
+      "get": {
+        "description": "获取历史模拟列表（带项目详情）\n\n用于首页历史项目展示，返回包含项目名称、描述等丰富信息的模拟列表\n\nQuery参数：\n    limit: 返回数量限制（默认20）\n\n返回：\n    {\n        \"success\": true,\n        \"data\": [\n            {\n                \"simulation_id\": \"sim_xxxx\",\n                \"project_id\": \"proj_xxxx\",\n                \"project_name\": \"武大舆情分析\",\n                \"simulation_requirement\": \"如果武汉大学发布...\",\n                \"status\": \"completed\",\n                \"entities_count\": 68,\n                \"profiles_count\": 68,\n                \"entity_types\": [\"Student\", \"Professor\", ...],\n                \"created_at\": \"2024-12-10\",\n                \"updated_at\": \"2024-12-10\",\n                \"total_rounds\": 120,\n                \"current_round\": 120,\n                \"report_id\": \"report_xxxx\",\n                \"version\": \"v1.0.2\"\n            },\n            ...\n        ],\n        \"count\": 7\n    }",
+        "operationId": "simulation_get_simulation_history_get",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "获取历史模拟列表（带项目详情）",
+        "tags": [
+          "simulation"
+        ]
+      }
+    },
+    "/api/simulation/interview": {
+      "post": {
+        "description": "采访单个Agent\n\n注意：此功能需要模拟环境处于运行状态（完成模拟循环后进入等待命令模式）\n\n请求（JSON）：\n    {\n        \"simulation_id\": \"sim_xxxx\",       // 必填，模拟ID\n        \"agent_id\": 0,                     // 必填，Agent ID\n        \"prompt\": \"你对这件事有什么看法？\",  // 必填，采访问题\n        \"platform\": \"twitter\",             // 可选，指定平台（twitter/reddit）\n                                           // 不指定时：双平台模拟同时采访两个平台\n        \"timeout\": 60                      // 可选，超时时间（秒），默认60\n    }\n\n返回（不指定platform，双平台模式）：\n    {\n        \"success\": true,\n        \"data\": {\n            \"agent_id\": 0,\n            \"prompt\": \"你对这件事有什么看法？\",\n            \"result\": {\n                \"agent_id\": 0,\n                \"prompt\": \"...\",\n                \"platforms\": {\n                    \"twitter\": {\"agent_id\": 0, \"response\": \"...\", \"platform\": \"twitter\"},\n                    \"reddit\": {\"agent_id\": 0, \"response\": \"...\", \"platform\": \"reddit\"}\n                }\n            },\n            \"timestamp\": \"2025-12-08T10:00:01\"\n        }\n    }\n\n返回（指定platform）：\n    {\n        \"success\": true,\n        \"data\": {\n            \"agent_id\": 0,\n            \"prompt\": \"你对这件事有什么看法？\",\n            \"result\": {\n                \"agent_id\": 0,\n                \"response\": \"我认为...\",\n                \"platform\": \"twitter\",\n                \"timestamp\": \"2025-12-08T10:00:00\"\n            },\n            \"timestamp\": \"2025-12-08T10:00:01\"\n        }\n    }",
+        "operationId": "simulation_interview_agent_post",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": true,
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Request validation or state error."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "采访单个Agent",
+        "tags": [
+          "simulation"
+        ]
+      }
+    },
+    "/api/simulation/interview/all": {
+      "post": {
+        "description": "全局采访 - 使用相同问题采访所有Agent\n\n注意：此功能需要模拟环境处于运行状态\n\n请求（JSON）：\n    {\n        \"simulation_id\": \"sim_xxxx\",            // 必填，模拟ID\n        \"prompt\": \"你对这件事整体有什么看法？\",  // 必填，采访问题（所有Agent使用相同问题）\n        \"platform\": \"reddit\",                   // 可选，指定平台（twitter/reddit）\n                                                // 不指定时：双平台模拟每个Agent同时采访两个平台\n        \"timeout\": 180                          // 可选，超时时间（秒），默认180\n    }\n\n返回：\n    {\n        \"success\": true,\n        \"data\": {\n            \"interviews_count\": 50,\n            \"result\": {\n                \"interviews_count\": 100,\n                \"results\": {\n                    \"twitter_0\": {\"agent_id\": 0, \"response\": \"...\", \"platform\": \"twitter\"},\n                    \"reddit_0\": {\"agent_id\": 0, \"response\": \"...\", \"platform\": \"reddit\"},\n                    ...\n                }\n            },\n            \"timestamp\": \"2025-12-08T10:00:01\"\n        }\n    }",
+        "operationId": "simulation_interview_all_agents_post",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": true,
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Request validation or state error."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "全局采访 - 使用相同问题采访所有Agent",
+        "tags": [
+          "simulation"
+        ]
+      }
+    },
+    "/api/simulation/interview/batch": {
+      "post": {
+        "description": "批量采访多个Agent\n\n注意：此功能需要模拟环境处于运行状态\n\n请求（JSON）：\n    {\n        \"simulation_id\": \"sim_xxxx\",       // 必填，模拟ID\n        \"interviews\": [                    // 必填，采访列表\n            {\n                \"agent_id\": 0,\n                \"prompt\": \"你对A有什么看法？\",\n                \"platform\": \"twitter\"      // 可选，指定该Agent的采访平台\n            },\n            {\n                \"agent_id\": 1,\n                \"prompt\": \"你对B有什么看法？\"  // 不指定platform则使用默认值\n            }\n        ],\n        \"platform\": \"reddit\",              // 可选，默认平台（被每项的platform覆盖）\n                                           // 不指定时：双平台模拟每个Agent同时采访两个平台\n        \"timeout\": 120                     // 可选，超时时间（秒），默认120\n    }\n\n返回：\n    {\n        \"success\": true,\n        \"data\": {\n            \"interviews_count\": 2,\n            \"result\": {\n                \"interviews_count\": 4,\n                \"results\": {\n                    \"twitter_0\": {\"agent_id\": 0, \"response\": \"...\", \"platform\": \"twitter\"},\n                    \"reddit_0\": {\"agent_id\": 0, \"response\": \"...\", \"platform\": \"reddit\"},\n                    \"twitter_1\": {\"agent_id\": 1, \"response\": \"...\", \"platform\": \"twitter\"},\n                    \"reddit_1\": {\"agent_id\": 1, \"response\": \"...\", \"platform\": \"reddit\"}\n                }\n            },\n            \"timestamp\": \"2025-12-08T10:00:01\"\n        }\n    }",
+        "operationId": "simulation_interview_agents_batch_post",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": true,
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Request validation or state error."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "批量采访多个Agent",
+        "tags": [
+          "simulation"
+        ]
+      }
+    },
+    "/api/simulation/interview/history": {
+      "post": {
+        "description": "获取Interview历史记录\n\n从模拟数据库中读取所有Interview记录\n\n请求（JSON）：\n    {\n        \"simulation_id\": \"sim_xxxx\",  // 必填，模拟ID\n        \"platform\": \"reddit\",          // 可选，平台类型（reddit/twitter）\n                                       // 不指定则返回两个平台的所有历史\n        \"agent_id\": 0,                 // 可选，只获取该Agent的采访历史\n        \"limit\": 100                   // 可选，返回数量，默认100\n    }\n\n返回：\n    {\n        \"success\": true,\n        \"data\": {\n            \"count\": 10,\n            \"history\": [\n                {\n                    \"agent_id\": 0,\n                    \"response\": \"我认为...\",\n                    \"prompt\": \"你对这件事有什么看法？\",\n                    \"timestamp\": \"2025-12-08T10:00:00\",\n                    \"platform\": \"reddit\"\n                },\n                ...\n            ]\n        }\n    }",
+        "operationId": "simulation_get_interview_history_post",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": true,
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Request validation or state error."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "获取Interview历史记录",
+        "tags": [
+          "simulation"
+        ]
+      }
+    },
+    "/api/simulation/list": {
+      "get": {
+        "description": "列出所有模拟\n\nQuery参数：\n    project_id: 按项目ID过滤（可选）",
+        "operationId": "simulation_list_simulations_get",
+        "parameters": [
+          {
+            "description": "Optional project id to filter simulations.",
+            "in": "query",
+            "name": "project_id",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimulationListResponse"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "List simulations",
+        "tags": [
+          "simulation"
+        ]
+      }
+    },
+    "/api/simulation/prepare": {
+      "post": {
+        "description": "准备模拟环境（异步任务，LLM智能生成所有参数）\n\n这是一个耗时操作，接口会立即返回task_id，\n使用 GET /api/simulation/prepare/status 查询进度\n\n特性：\n- 自动检测已完成的准备工作，避免重复生成\n- 如果已准备完成，直接返回已有结果\n- 支持强制重新生成（force_regenerate=true）\n\n步骤：\n1. 检查是否已有完成的准备工作\n2. 从Zep图谱读取并过滤实体\n3. 为每个实体生成OASIS Agent Profile（带重试机制）\n4. LLM智能生成模拟配置（带重试机制）\n5. 保存配置文件和预设脚本\n\n请求（JSON）：\n    {\n        \"simulation_id\": \"sim_xxxx\",                   // 必填，模拟ID\n        \"entity_types\": [\"Student\", \"PublicFigure\"],  // 可选，指定实体类型\n        \"use_llm_for_profiles\": true,                 // 可选，是否用LLM生成人设\n        \"parallel_profile_count\": 5,                  // 可选，并行生成人设数量，默认5\n        \"force_regenerate\": false                     // 可选，强制重新生成，默认false\n    }\n\n返回：\n    {\n        \"success\": true,\n        \"data\": {\n            \"simulation_id\": \"sim_xxxx\",\n            \"task_id\": \"task_xxxx\",           // 新任务时返回\n            \"status\": \"preparing|ready\",\n            \"message\": \"准备任务已启动|已有完成的准备工作\",\n            \"already_prepared\": true|false    // 是否已准备完成\n        }\n    }",
+        "operationId": "simulation_prepare_simulation_post",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": true,
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Request validation or state error."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "准备模拟环境（异步任务，LLM智能生成所有参数）",
+        "tags": [
+          "simulation"
+        ]
+      }
+    },
+    "/api/simulation/prepare/status": {
+      "post": {
+        "description": "查询准备任务进度\n\n支持两种查询方式：\n1. 通过task_id查询正在进行的任务进度\n2. 通过simulation_id检查是否已有完成的准备工作\n\n请求（JSON）：\n    {\n        \"task_id\": \"task_xxxx\",          // 可选，prepare返回的task_id\n        \"simulation_id\": \"sim_xxxx\"      // 可选，模拟ID（用于检查已完成的准备）\n    }\n\n返回：\n    {\n        \"success\": true,\n        \"data\": {\n            \"task_id\": \"task_xxxx\",\n            \"status\": \"processing|completed|ready\",\n            \"progress\": 45,\n            \"message\": \"...\",\n            \"already_prepared\": true|false,  // 是否已有完成的准备\n            \"prepare_info\": {...}            // 已准备完成时的详细信息\n        }\n    }",
+        "operationId": "simulation_get_prepare_status_post",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SimulationPrepareStatusRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimulationPrepareStatusResponse"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Request validation or state error."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "Get simulation prepare task status",
+        "tags": [
+          "simulation"
+        ]
+      }
+    },
+    "/api/simulation/script/{script_name}/download": {
+      "get": {
+        "description": "下载模拟运行脚本文件（通用脚本，位于 scripts/）\n\nscript_name可选值：\n    - run_twitter_simulation.py\n    - run_reddit_simulation.py\n    - run_parallel_simulation.py\n    - action_logger.py",
+        "operationId": "simulation_download_simulation_script_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "script_name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "format": "binary",
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "下载模拟运行脚本文件（通用脚本，位于 scripts/）",
+        "tags": [
+          "simulation"
+        ]
+      }
+    },
+    "/api/simulation/start": {
+      "post": {
+        "description": "开始运行模拟\n\n请求（JSON）：\n    {\n        \"simulation_id\": \"sim_xxxx\",          // 必填，模拟ID\n        \"platform\": \"parallel\",                // 可选: twitter / reddit / parallel (默认)\n        \"max_rounds\": 100,                     // 可选: 最大模拟轮数，用于截断过长的模拟\n        \"enable_graph_memory_update\": false,   // 可选: 是否将Agent活动动态更新到Zep图谱记忆\n        \"force\": false                         // 可选: 强制重新开始（会停止运行中的模拟并清理日志）\n    }\n\n关于 force 参数：\n    - 启用后，如果模拟正在运行或已完成，会先停止并清理运行日志\n    - 清理的内容包括：run_state.json, actions.jsonl, simulation.log 等\n    - 不会清理配置文件（simulation_config.json）和 profile 文件\n    - 适用于需要重新运行模拟的场景\n\n关于 enable_graph_memory_update：\n    - 启用后，模拟中所有Agent的活动（发帖、评论、点赞等）都会实时更新到Zep图谱\n    - 这可以让图谱\"记住\"模拟过程，用于后续分析或AI对话\n    - 需要模拟关联的项目有有效的 graph_id\n    - 采用批量更新机制，减少API调用次数\n\n返回：\n    {\n        \"success\": true,\n        \"data\": {\n            \"simulation_id\": \"sim_xxxx\",\n            \"runner_status\": \"running\",\n            \"process_pid\": 12345,\n            \"twitter_running\": true,\n            \"reddit_running\": true,\n            \"started_at\": \"2025-12-01T10:00:00\",\n            \"graph_memory_update_enabled\": true,  // 是否启用了图谱记忆更新\n            \"force_restarted\": true               // 是否是强制重新开始\n        }\n    }",
+        "operationId": "simulation_start_simulation_post",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": true,
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Request validation or state error."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "开始运行模拟",
+        "tags": [
+          "simulation"
+        ]
+      }
+    },
+    "/api/simulation/stop": {
+      "post": {
+        "description": "停止模拟\n\n请求（JSON）：\n    {\n        \"simulation_id\": \"sim_xxxx\"  // 必填，模拟ID\n    }\n\n返回：\n    {\n        \"success\": true,\n        \"data\": {\n            \"simulation_id\": \"sim_xxxx\",\n            \"runner_status\": \"stopped\",\n            \"completed_at\": \"2025-12-01T12:00:00\"\n        }\n    }",
+        "operationId": "simulation_stop_simulation_post",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": true,
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Request validation or state error."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "停止模拟",
+        "tags": [
+          "simulation"
+        ]
+      }
+    },
+    "/api/simulation/{simulation_id}": {
+      "get": {
+        "description": "获取模拟状态",
+        "operationId": "simulation_get_simulation_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimulationResponse"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "Get simulation state",
+        "tags": [
+          "simulation"
+        ]
+      }
+    },
+    "/api/simulation/{simulation_id}/actions": {
+      "get": {
+        "description": "获取模拟中的Agent动作历史\n\nQuery参数：\n    limit: 返回数量（默认100）\n    offset: 偏移量（默认0）\n    platform: 过滤平台（twitter/reddit）\n    agent_id: 过滤Agent ID\n    round_num: 过滤轮次\n\n返回：\n    {\n        \"success\": true,\n        \"data\": {\n            \"count\": 100,\n            \"actions\": [...]\n        }\n    }",
+        "operationId": "simulation_get_simulation_actions_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "获取模拟中的Agent动作历史",
+        "tags": [
+          "simulation"
+        ]
+      }
+    },
+    "/api/simulation/{simulation_id}/agent-stats": {
+      "get": {
+        "description": "获取每个Agent的统计信息\n\n用于前端展示Agent活跃度排行、动作分布等",
+        "operationId": "simulation_get_agent_stats_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "获取每个Agent的统计信息",
+        "tags": [
+          "simulation"
+        ]
+      }
+    },
+    "/api/simulation/{simulation_id}/comments": {
+      "get": {
+        "description": "获取模拟中的评论（仅Reddit）\n\nQuery参数：\n    post_id: 过滤帖子ID（可选）\n    limit: 返回数量\n    offset: 偏移量",
+        "operationId": "simulation_get_simulation_comments_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "获取模拟中的评论（仅Reddit）",
+        "tags": [
+          "simulation"
+        ]
+      }
+    },
+    "/api/simulation/{simulation_id}/config": {
+      "get": {
+        "description": "获取模拟配置（LLM智能生成的完整配置）\n\n返回包含：\n    - time_config: 时间配置（模拟时长、轮次、高峰/低谷时段）\n    - agent_configs: 每个Agent的活动配置（活跃度、发言频率、立场等）\n    - event_config: 事件配置（初始帖子、热点话题）\n    - platform_configs: 平台配置\n    - generation_reasoning: LLM的配置推理说明",
+        "operationId": "simulation_get_simulation_config_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "获取模拟配置（LLM智能生成的完整配置）",
+        "tags": [
+          "simulation"
+        ]
+      }
+    },
+    "/api/simulation/{simulation_id}/config/download": {
+      "get": {
+        "description": "下载模拟配置文件",
+        "operationId": "simulation_download_simulation_config_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "format": "binary",
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "下载模拟配置文件",
+        "tags": [
+          "simulation"
+        ]
+      }
+    },
+    "/api/simulation/{simulation_id}/config/realtime": {
+      "get": {
+        "description": "实时获取模拟配置（用于在生成过程中实时查看进度）\n\n与 /config 接口的区别：\n- 直接读取文件，不经过 SimulationManager\n- 适用于生成过程中的实时查看\n- 返回额外的元数据（如文件修改时间、是否正在生成等）\n- 即使配置还没生成完也能返回部分信息\n\n返回：\n    {\n        \"success\": true,\n        \"data\": {\n            \"simulation_id\": \"sim_xxxx\",\n            \"file_exists\": true,\n            \"file_modified_at\": \"2025-12-04T18:20:00\",\n            \"is_generating\": true,  // 是否正在生成\n            \"generation_stage\": \"generating_config\",  // 当前生成阶段\n            \"config\": {...}  // 配置内容（如果存在）\n        }\n    }",
+        "operationId": "simulation_get_simulation_config_realtime_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "实时获取模拟配置（用于在生成过程中实时查看进度）",
+        "tags": [
+          "simulation"
+        ]
+      }
+    },
+    "/api/simulation/{simulation_id}/posts": {
+      "get": {
+        "description": "获取模拟中的帖子\n\nQuery参数：\n    platform: 平台类型（twitter/reddit）\n    limit: 返回数量（默认50）\n    offset: 偏移量\n\n返回帖子列表（从SQLite数据库读取）",
+        "operationId": "simulation_get_simulation_posts_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "获取模拟中的帖子",
+        "tags": [
+          "simulation"
+        ]
+      }
+    },
+    "/api/simulation/{simulation_id}/profiles": {
+      "get": {
+        "description": "获取模拟的Agent Profile\n\nQuery参数：\n    platform: 平台类型（reddit/twitter，默认reddit）",
+        "operationId": "simulation_get_simulation_profiles_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "获取模拟的Agent Profile",
+        "tags": [
+          "simulation"
+        ]
+      }
+    },
+    "/api/simulation/{simulation_id}/profiles/realtime": {
+      "get": {
+        "description": "实时获取模拟的Agent Profile（用于在生成过程中实时查看进度）\n\n与 /profiles 接口的区别：\n- 直接读取文件，不经过 SimulationManager\n- 适用于生成过程中的实时查看\n- 返回额外的元数据（如文件修改时间、是否正在生成等）\n\nQuery参数：\n    platform: 平台类型（reddit/twitter，默认reddit）\n\n返回：\n    {\n        \"success\": true,\n        \"data\": {\n            \"simulation_id\": \"sim_xxxx\",\n            \"platform\": \"reddit\",\n            \"count\": 15,\n            \"total_expected\": 93,  // 预期总数（如果有）\n            \"is_generating\": true,  // 是否正在生成\n            \"file_exists\": true,\n            \"file_modified_at\": \"2025-12-04T18:20:00\",\n            \"profiles\": [...]\n        }\n    }",
+        "operationId": "simulation_get_simulation_profiles_realtime_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "实时获取模拟的Agent Profile（用于在生成过程中实时查看进度）",
+        "tags": [
+          "simulation"
+        ]
+      }
+    },
+    "/api/simulation/{simulation_id}/run-status": {
+      "get": {
+        "description": "获取模拟运行实时状态（用于前端轮询）\n\n返回：\n    {\n        \"success\": true,\n        \"data\": {\n            \"simulation_id\": \"sim_xxxx\",\n            \"runner_status\": \"running\",\n            \"current_round\": 5,\n            \"total_rounds\": 144,\n            \"progress_percent\": 3.5,\n            \"simulated_hours\": 2,\n            \"total_simulation_hours\": 72,\n            \"twitter_running\": true,\n            \"reddit_running\": true,\n            \"twitter_actions_count\": 150,\n            \"reddit_actions_count\": 200,\n            \"total_actions_count\": 350,\n            \"started_at\": \"2025-12-01T10:00:00\",\n            \"updated_at\": \"2025-12-01T10:30:00\"\n        }\n    }",
+        "operationId": "simulation_get_run_status_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimulationRunStatusResponse"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "Get simulation run status",
+        "tags": [
+          "simulation"
+        ]
+      }
+    },
+    "/api/simulation/{simulation_id}/run-status/detail": {
+      "get": {
+        "description": "获取模拟运行详细状态（包含所有动作）\n\n用于前端展示实时动态\n\nQuery参数：\n    platform: 过滤平台（twitter/reddit，可选）\n\n返回：\n    {\n        \"success\": true,\n        \"data\": {\n            \"simulation_id\": \"sim_xxxx\",\n            \"runner_status\": \"running\",\n            \"current_round\": 5,\n            ...\n            \"all_actions\": [\n                {\n                    \"round_num\": 5,\n                    \"timestamp\": \"2025-12-01T10:30:00\",\n                    \"platform\": \"twitter\",\n                    \"agent_id\": 3,\n                    \"agent_name\": \"Agent Name\",\n                    \"action_type\": \"CREATE_POST\",\n                    \"action_args\": {\"content\": \"...\"},\n                    \"result\": null,\n                    \"success\": true\n                },\n                ...\n            ],\n            \"twitter_actions\": [...],  # Twitter 平台的所有动作\n            \"reddit_actions\": [...]    # Reddit 平台的所有动作\n        }\n    }",
+        "operationId": "simulation_get_run_status_detail_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "获取模拟运行详细状态（包含所有动作）",
+        "tags": [
+          "simulation"
+        ]
+      }
+    },
+    "/api/simulation/{simulation_id}/timeline": {
+      "get": {
+        "description": "获取模拟时间线（按轮次汇总）\n\n用于前端展示进度条和时间线视图\n\nQuery参数：\n    start_round: 起始轮次（默认0）\n    end_round: 结束轮次（默认全部）\n\n返回每轮的汇总信息",
+        "operationId": "simulation_get_simulation_timeline_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "获取模拟时间线（按轮次汇总）",
+        "tags": [
+          "simulation"
+        ]
+      }
+    },
+    "/health": {
+      "get": {
+        "description": "Return a lightweight process health payload.",
+        "operationId": "health_get",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthEnvelope"
+                }
+              }
+            },
+            "description": "Health check response."
+          }
+        },
+        "summary": "Health check",
+        "tags": [
+          "system"
+        ]
+      }
+    },
+    "/openapi.json": {
+      "get": {
+        "description": "Return the live machine-readable OpenAPI contract.",
+        "operationId": "openapi_spec_get",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenAPIDocument"
+                }
+              }
+            },
+            "description": "Successful response."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Referenced resource was not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unhandled backend error."
+          }
+        },
+        "summary": "Get OpenAPI document",
+        "tags": [
+          "system"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ]
+}
