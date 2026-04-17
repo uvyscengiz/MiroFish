@@ -34,7 +34,7 @@ logger = get_logger('mirofish.api.simulation')
 
 # Interview prompt 优化前缀
 # 添加此前缀可以避免Agent调用工具，直接用文本回复
-INTERVIEW_PROMPT_PREFIX = "结合你的人设、所有的过往记忆与行动，不调用任何工具直接用文本回复我："
+INTERVIEW_PROMPT_PREFIX = "Based on your persona, prior memories, and past actions, reply directly in plain English without calling any tools: "
 
 
 def _typed_payload(model_cls, payload: dict):
@@ -2650,7 +2650,7 @@ def get_env_status():
                 "env_alive": true,
                 "twitter_available": true,
                 "reddit_available": true,
-                "message": "环境正在运行，可以接收Interview命令"
+                "message": "The environment is running and can accept interview commands"
             }
         }
     """
@@ -2715,7 +2715,7 @@ def close_simulation_env():
         {
             "success": true,
             "data": {
-                "message": "环境关闭命令已发送",
+                "message": "Environment close command sent",
                 "result": {...},
                 "timestamp": "2025-12-08T10:00:01"
             }

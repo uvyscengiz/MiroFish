@@ -36,7 +36,7 @@ class GraphitiEntityReader:
         defined_entity_types: Optional[List[str]] = None,
         enrich_with_edges: bool = True,
     ) -> FilteredEntities:
-        logger.info("开始从 Graphiti 图谱 %s 读取实体", graph_id)
+        logger.info("Reading entities from Graphiti graph %s", graph_id)
 
         all_nodes = self.get_all_nodes(graph_id)
         all_edges = self.get_all_edges(graph_id) if enrich_with_edges else []
