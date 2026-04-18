@@ -62,6 +62,7 @@ class TaskPayload(GraphContractModel):
     result: dict[str, Any] | None = None
     error: str | None = None
     metadata: dict[str, Any] = Field(default_factory=dict)
+    already_prepared: bool = False
 
 
 class GraphDataPayload(FlexibleGraphContractModel):
